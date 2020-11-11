@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "./outsources.dart";
+import 'outsources.dart';
 import './Quiz.dart';
 
 void main() => runApp(MyApp());
@@ -13,6 +13,7 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   var index = 0;
+  bool alreadyPressed = true;
 
   int qindex = 0;
   int qtotalScore = 0;
@@ -20,11 +21,15 @@ class MyAppState extends State<MyApp> {
   void reset() {
     qindex = 0;
     qtotalScore = 0;
+    alreadyPressed = true;
   }
 
   void antwort(int score) {
-    qtotalScore += score;
-    qindex = qindex + 1;
+    if (alreadyPressed){
+      qtotalScore += score;
+      qindex = qindex + 1;
+      alreadyPressed = false;
+    }
   }
 
   //Eine Seite weiter
@@ -46,7 +51,7 @@ class MyAppState extends State<MyApp> {
   }
 
   void quiz(){
-    setState(() {});
+    setState(() {alreadyPressed = true;});
   }
 
   void nm(){

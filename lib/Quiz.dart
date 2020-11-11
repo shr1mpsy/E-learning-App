@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './underquiz.dart';
-import './result.dart';
+import 'underquiz.dart';
+import 'result.dart';
 
   var _fragen = [
   {
