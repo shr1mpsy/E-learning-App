@@ -1,16 +1,14 @@
-# cloud
+# Cloud App
 
-A new Flutter application.
+This is a flutter application intended to be a school project about Cloud-Computing.
 
-## Getting Started
+## About the App
 
-This project is a starting point for a Flutter application.
+Its a App where u can gain knowlegde about Cloud-Computing (and maybe later about other topics). 
+Its structured like that: 
 
-A few resources to get you started if this is your first Flutter project:
+1. You can click through the different topics. The knowledge is simple, diversified and interesting prepared.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+2. After every topic is a quiz that tests you about how much of the knowledge you kept.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+3. A overview/menu screen where you can see all the topics that you've already done and which you still need to.
