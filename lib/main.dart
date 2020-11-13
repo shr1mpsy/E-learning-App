@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'outsources.dart';
 import './Quiz.dart';
 
 void main() => runApp(MyApp());
