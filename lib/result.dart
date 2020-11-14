@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 
 class Result extends StatelessWidget {
   final int resultScore;
+  final int len;
   final Function resultHandler;
-  Result(this.resultScore, this.resultHandler);
+  Result(this.resultScore, this.resultHandler, this.len);
 
   String get resultPhrase {
     String resultText;
-    if (resultScore == 3) {
+    /*if (resultScore == 3) {
       resultText = "Sehr Gut! Du hast 3 von 3 Fragen richtig beantwortet";
     } else if (resultScore == 2) {
       resultText = "Geht so! Du hast 2 von 3 Fragen richtig beantwortet";
@@ -16,7 +17,8 @@ class Result extends StatelessWidget {
       resultText = "Nicht so gut! Du hast 1 von 3 Fragen richtig beantwortet";
     } else {
       resultText = "Schlecht! Du hast 0 von 3 Fragen richtig beantwortet";
-    }
+    }*/
+    resultText = "Du hast ${resultScore} von ${len} Fragen richtig";
     return resultText;
   }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'underquiz.dart';
 import 'result.dart';
 
-  var _fragen = [
+  var _fragen = [[
   {
   "frage": "Welcher Service wird nicht von Cloud Computing abgedeckt",
   "antworten": [
@@ -29,6 +29,44 @@ import 'result.dart';
   {"text": "Die Möglichkeit von überall und zu jeder Zeit mit jedem Gerät darauf zuzugreifen", "score": 0}
   ]
   }
+  ],
+    //2
+  [
+    {
+      "frage": "Welcher ist keiner der Hauptvorteile des Cloud-Computing?",
+      "antworten": [
+        {"text": "Billiger", "score": 0},
+        {"text": "Skalierbarer", "score": 0},
+        {"text": "Sicherer", "score": 0},
+        {"text": "Unabhängigkeit vom Anbieter", "score": 1}
+      ]
+    },
+    {
+      "frage": "Gibt es bei Cloud-Computing 24/7 Kundensupport?",
+      "antworten": [
+        {"text": "Ja", "score": 1},
+        {"text": "Nein", "score": 0},
+      ]
+    },
+    {
+      "frage": "Was beudeutet Cloud auf Deutsch? xD",
+      "antworten": [
+        {"text": "Gewitter", "score": 0},
+        {"text": "Wolke", "score": 1},
+        {"text": "Nebel", "score": 0},
+        {"text": "Sturm", "score": 0}
+      ]
+    },
+    {
+      "frage": "Welche Art des Cloud gibt es NICHT?",
+      "antworten": [
+        {"text": "public Cloud", "score": 0},
+        {"text": "native Cloud", "score": 1},
+        {"text": "private Cloud", "score": 0},
+        {"text": "hybrid Cloud", "score": 0}
+      ]
+    }
+  ]
   ];
 
 
@@ -38,15 +76,16 @@ class Quiz extends StatelessWidget{
   final int totalScore;
   final Function reset;
   final Function antwort;
+  final int entryIndex;
 
-  Quiz(this.index, this.totalScore, this.reset, this.antwort);
+  Quiz(this.index, this.totalScore, this.reset, this.antwort, this.entryIndex);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-          child: index < _fragen.length
-              ? Underquiz(fragen: _fragen, antwort: antwort, index: index)
-              : Result(totalScore, reset)
+          child: index < _fragen[entryIndex].length
+              ? Underquiz(fragen: _fragen, antwort: antwort, index: index, entryIndex: entryIndex)
+              : Result(totalScore, reset, _fragen[entryIndex].length)
     );
   }
 }

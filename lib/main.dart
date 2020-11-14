@@ -10,6 +10,7 @@ class MyApp extends StatefulWidget {
   }
 }
 
+
 class MyAppState extends State<MyApp> {
   // Texte
   final text = [
@@ -35,32 +36,41 @@ class MyAppState extends State<MyApp> {
 
     [
       //1
-      "Entry: B: Die ist Entry B",
+      "Kosten: Beim Cloud Computing fallen keinerlei Investitionskosten für den Erwerb von Hardware und Software oder die Einrichtung und den Betrieb lokaler Rechenzentren an,"
+          " die Serverracks, Stromversorgung und Kühlung rund um die Uhr sowie IT-Experten zur Verwaltung der Infrastruktur erforderlich machen."
+          " Da kommt schnell einiges zusammen.",
       //2
-      "Wie funktioniert die Ablage von Dateien und die Zugriffsverwaltung in der großen Wolke des Internets? "
-          "Welche Probleme können auftreten und wie werden diese gelöst? Wir gehen diesen Fragen auf den Grund und "
-          "stellen Ihnen die wichtigsten Begriffe rund um Cloud Computing anschaulich dar.",
+      "Geschwindigkeit: Da die meisten Cloud Computing-Dienste bedarfsgesteuert und als Self-Service-Angebote bereitgestellt werden,"
+          " lassen sich selbst äußerst große Mengen an Computingressourcen innerhalb weniger Minuten bereitstellen."
+          " Diese Bereitstellung erfolgt üblicherweise mit nur wenigen Mausklicks, sodass Unternehmen von großer Flexibilität profitieren"
+          " und der mit der Kapazitätsplanung einhergehende Druck der Vergangenheit angehört.",
       //3
-      "Unter einer Cloud oder Cloud Computing versteht man die internetbasierte Bereitstellung von Speicherplatz, Rechenleistung oder Anwendungssoftware als Dienstleistung."
-          " Die Nutzung dieser Infrastrukturen erfolgt vorwiegend über Programme auf den zugreifenden Geräten (Clients) sowie über den Webbrowser."
-          " Die Wartung und Pflege der zugrundeliegenden Architektur übernimmt der Anbieter.",
+      "Globale Skalierung: Zu den Vorteilen von Cloud Computing-Diensten zählt u. a. die Möglichkeit einer elastischen Skalierung."
+          " Im Cloudkontext bedeutet das, die richtige Menge an IT-Ressourcen (beispielsweise eine höhere oder niedrigere Rechenleistung, Speicherkapazität oder Bandbreite)"
+          " genau dann bereitzustellen, wenn sie benötigt wird – und zwar vom richtigen geografischen Standort aus.",
       //4
-      "Ursprünglich und seit den 1990er Jahren steht der Begriff “Wolke” (englisch: “Cloud”) in IT-Diagrammen für Teile einer Informationsarchitektur. "
-          "Hiermit werden meist Bereiche beschrieben, in denen Computersysteme wie Desktop-Rechner, "
-          "Server und beispielsweise Smartphones auf nicht näher definierte Weise Daten untereinander austauschen. Die Analogie zu der Wolke leitet sich dadurch ab, "
-          "dass es für den Anwender gleichgültig und gewissermaßen “verschleiert” ist, auf welchem konkreten Rechner und mit welcher zugrundeliegenden Hardware die Daten abgelegt sind"
+      "Produktivität: Lokale Rechenzentren gehen typischerweise mit einem erheblichen Einrichtungs- und Verwaltungsaufwand einher."
+          " Dazu zählen z.B. die Einrichtung von Hardware, das Aufspielen von Softwarepatches und andere zeitaufwändige IT-Verwaltungsaufgaben."
+          " Beim Cloud Computing müssen viele dieser Aufgaben nicht länger ausgeführt werden, sodass sich IT-Teams auf wichtigere Unternehmensziele konzentrieren können."
     ],
 
   ];
 
-  final List<String> entries = <String>['A', 'B'];
-  Map values= {'A':0, 'B':1};
-  //for(var item in entries; counter++){}
+  final List<String> entries = <String>['Allgemeines', 'Vorteile von Cloud Computing'];
+  Map values= {'Allgemeines': 0, 'Vorteile von Cloud Computing': 1};
+  /*void addValues(){
+    int counter = 0;
+    for(var item in entries){
+      values[item] = counter;
+      counter++;
+    }
+  }*/
 
   var index = 0;
   bool isOverview = false;
   var entryIndex = 0;
   String key;
+  List<String> assets = ["assets/cloud.jpg", "assets/cloud2.jpg"];
 
   int qindex = 0;
   int qtotalScore = 0;
@@ -125,8 +135,10 @@ class MyAppState extends State<MyApp> {
     if (!isOverview) {
       return MaterialApp(
         home: Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             title: Text("Cloud-Computing"),
+            backgroundColor: Colors.lightBlueAccent,
           ),
           body: ListView.builder(
               padding: const EdgeInsets.all(8),
@@ -138,8 +150,9 @@ class MyAppState extends State<MyApp> {
                         key = entries[index];
                         toContent();
                       },
-                      title: Text('Thema ${entries[index]}'),
-                      leading: Icon(Icons.adjust_rounded),
+                      tileColor: Colors.white,
+                      title: Text('${entries[index]}'),
+                      leading: Image.asset(assets[index]),
                     )
                 );
               }),
@@ -150,10 +163,12 @@ class MyAppState extends State<MyApp> {
     if (isOverview) {
       return MaterialApp(
         home: Scaffold(
+          backgroundColor: Colors.white,
             appBar: AppBar(
               title: Text("Cloud-Computing"),
+              backgroundColor: Colors.lightBlueAccent,
             ),
-            body: index < 4
+            body: index < text[entryIndex].length
                 ? Column(
                     children: <Widget>[
                       Text(text[entryIndex][index]),
@@ -171,7 +186,7 @@ class MyAppState extends State<MyApp> {
                   )
                 : Column(
                     children: <Widget>[
-                      Quiz(qindex, qtotalScore, reset, antwort),
+                      Quiz(qindex, qtotalScore, reset, antwort, entryIndex),
                       FlatButton(
                           onPressed: nm, child: Text("Lektion neu starten")),
                       FlatButton(
