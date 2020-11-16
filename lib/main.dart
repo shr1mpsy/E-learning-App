@@ -53,6 +53,11 @@ class MyAppState extends State<MyApp> {
     ],
   ];
 
+  final headlines = [
+    ["Allgemeines 1", "Allgemeines 2", "Allgemeines 3", "Allgemeines 4"],
+    ["Kosten", "Geschwindigkeit", "Globale Skalierung", "Produktivität"]
+  ];
+
   final List<String> entries = <String>[
     'Allgemeines',
     'Vorteile von Cloud Computing'
@@ -164,17 +169,31 @@ class MyAppState extends State<MyApp> {
             body: Column(
               children: <Widget>[
                 Container(
-                  color: Colors.amber[20],
-                  margin: EdgeInsets.all(19.0),
-                    child: Text(
-                      text[entryIndex][index],
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black38
-                      ),
-                    )
-                ),
+                    color: Colors.amber[20],
+                    margin: EdgeInsets.all(19.0),
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 20.0),
+                          child: Center(
+                              child: Text(
+                            headlines[entryIndex][index],
+                            style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w900
+                            ),
+                          )),
+                        ),
+                        Text(
+                          text[entryIndex][index],
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -201,8 +220,7 @@ class MyAppState extends State<MyApp> {
                 child: Icon(Icons.arrow_forward_ios_outlined)),
           ),
         );
-      }
-      else {
+      } else {
         return MaterialApp(
           home: Scaffold(
             backgroundColor: Colors.white,
@@ -224,9 +242,6 @@ class MyAppState extends State<MyApp> {
     }
   }
 }
-
-
-
 
 /* FIRST VERSION!
     if (isOverview) {
