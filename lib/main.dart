@@ -65,11 +65,12 @@ class MyAppState extends State<MyApp> {
   Map values = {'Allgemeines': 0, 'Vorteile von Cloud Computing': 1};
 
   var index = 0;
-  bool isOverview = false;
+  bool isOverview = true;
   var entryIndex = 0;
   String quizAtOverview;
   String key;
   List<String> assets = ["assets/cloud.jpg", "assets/cloud2.jpg"];
+  List<List<String>> img = [["assets/cloud.jpg", "assets/cloud2.jpg", "", ""], ["assets/cloud.jpg", "assets/cloud2.jpg", "", ""]];
 
   int qindex = 0;
   int qtotalScore = 0;
@@ -93,7 +94,6 @@ class MyAppState extends State<MyApp> {
     setState(() {
       index = index + 1;
     });
-    print(index);
   }
 
   //Eine Seite zurück
@@ -103,7 +103,6 @@ class MyAppState extends State<MyApp> {
         index = index - 1;
       }
     });
-    print(index);
   }
 
   void nm() {
@@ -128,9 +127,51 @@ class MyAppState extends State<MyApp> {
     });
   }
 
+  //WIDGETS
+
+  Widget picture(path){
+    if (path != ""){
+      return Center(
+          child :Image.asset(
+            path,
+            width: double.infinity,
+            height: 100,
+          )
+      );
+    }
+    else{
+      return Center();
+    }
+  }
+
+  Widget myText(path){
+    return Text(
+      path,
+      style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          color: Colors.black38),
+    );
+  }
+
+  Widget headline(path){
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 20.0),
+      child: Center(
+          child: Text(
+            path,
+            style: TextStyle(
+                fontSize: 30,
+                color: Colors.black54,
+                fontWeight: FontWeight.w900
+            ),
+          )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (!isOverview) {
+    if (isOverview) {
       return MaterialApp(
         home: Scaffold(
           backgroundColor: Colors.white,
@@ -157,7 +198,7 @@ class MyAppState extends State<MyApp> {
       );
     }
 
-    if (isOverview) {
+    if (!isOverview) {
       if (index < text[entryIndex].length) {
         return MaterialApp(
           home: Scaffold(
@@ -173,25 +214,9 @@ class MyAppState extends State<MyApp> {
                     margin: EdgeInsets.all(19.0),
                     child: Column(
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 20.0),
-                          child: Center(
-                              child: Text(
-                            headlines[entryIndex][index],
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w900
-                            ),
-                          )),
-                        ),
-                        Text(
-                          text[entryIndex][index],
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black38),
-                        ),
+                        picture(img[entryIndex][index]),
+                        headline(headlines[entryIndex][index]),
+                        myText(text[entryIndex][index]),
                       ],
                     )),
                 Row(
@@ -242,45 +267,3 @@ class MyAppState extends State<MyApp> {
     }
   }
 }
-
-/* FIRST VERSION!
-    if (isOverview) {
-      return MaterialApp(
-        home: Scaffold(
-          backgroundColor: Colors.white,
-            appBar: AppBar(
-              title: Text("Cloud-Computing"),
-              backgroundColor: Colors.lightBlueAccent,
-            ),
-            body: index < text[entryIndex].length
-                ? Column(
-                    children: <Widget>[
-                      Text(text[entryIndex][index]),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          RaisedButton(
-                              child: Text("<<Zurück"), onPressed: antwortbw),
-                          RaisedButton(
-                              child: Text("Weiter>>"), onPressed: antwortfw),
-                        ],
-                      ),
-                      RaisedButton(onPressed: toOverview, child: Text("Zur Übersicht"))
-                    ],
-                  )
-                : Column(
-                    children: <Widget>[
-                      Quiz(qindex, qtotalScore, reset, antwort, entryIndex),
-                      FlatButton(
-                          onPressed: nm, child: Text("Lektion neu starten")),
-                      RaisedButton(
-                          onPressed: toOverview, child: Text("Zur Übersicht"))
-                    ],
-                  )),
-      );
-    }
-  }
-}
-END
- */
