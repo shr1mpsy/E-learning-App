@@ -2,35 +2,43 @@ import 'package:flutter/material.dart';
 import 'underquiz.dart';
 import 'result.dart';
 
-  var _fragen = [[
-  {
-  "frage": "Welcher Service wird nicht von Cloud Computing abgedeckt",
-  "antworten": [
-  {"text": "IaaS", "score": 0},
-  {"text": "SaaS", "score": 0},
-  {"text": "RaaS", "score": 1},
-  {"text": "PaaS", "score": 0}
-  ]
-  },
-  {
-  "frage": "Wer ist der größte Anbieter für Cloudservices",
-  "antworten": [
-  {"text": "Amazon(AWS)", "score": 1},
-  {"text": "Google(GCP)", "score": 0},
-  {"text": "Microsoft(Azure)", "score": 0}
-  ]
-  },
-  {
-  "frage": "Was ist nicht Service einer Cloud",
-  "antworten": [
-  {"text": "Bereitstellung von Speicherplatz und Rechenkraft", "score": 0},
-  {"text": "Bereitstellung von Nutzerservice(Hilfe)", "score": 0},
-  {"text": "Bereitstellung von Hilfsgeldern für Projekte", "score": 1},
-  {"text": "Die Möglichkeit von überall und zu jeder Zeit mit jedem Gerät darauf zuzugreifen", "score": 0}
-  ]
-  }
+var _fragen = [
+  [
+    {
+      "frage": "Welcher Service wird nicht von Cloud Computing abgedeckt",
+      "antworten": [
+        {"text": "IaaS", "score": 0},
+        {"text": "SaaS", "score": 0},
+        {"text": "RaaS", "score": 1},
+        {"text": "PaaS", "score": 0}
+      ]
+    },
+    {
+      "frage": "Wer ist der größte Anbieter für Cloudservices",
+      "antworten": [
+        {"text": "Amazon(AWS)", "score": 1},
+        {"text": "Google(GCP)", "score": 0},
+        {"text": "Microsoft(Azure)", "score": 0}
+      ]
+    },
+    {
+      "frage": "Was ist nicht Service einer Cloud",
+      "antworten": [
+        {
+          "text": "Bereitstellung von Speicherplatz und Rechenkraft",
+          "score": 0
+        },
+        {"text": "Bereitstellung von Nutzerservice(Hilfe)", "score": 0},
+        {"text": "Bereitstellung von Hilfsgeldern für Projekte", "score": 1},
+        {
+          "text":
+              "Die Möglichkeit von überall und zu jeder Zeit mit jedem Gerät darauf zuzugreifen",
+          "score": 0
+        }
+      ]
+    }
   ],
-    //2
+  //2
   [
     {
       "frage": "Welcher ist keiner der Hauptvorteile des Cloud-Computing?",
@@ -66,12 +74,20 @@ import 'result.dart';
         {"text": "hybrid Cloud", "score": 0}
       ]
     }
+  ],
+  // Definition
+  [
+    {
+      "frage": "Wo werden Daten gespeichert?",
+      "antworten": [
+        {"text": "lokal", "score": 0},
+        {"text": "auf entfernten Servern", "score": 1}
+      ]
+    }
   ]
-  ];
+];
 
-
-class Quiz extends StatelessWidget{
-
+class Quiz extends StatelessWidget {
   final int index;
   final int totalScore;
   final Function reset;
@@ -83,10 +99,12 @@ class Quiz extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
-          child: index < _fragen[entryIndex].length
-              ? Underquiz(fragen: _fragen, antwort: antwort, index: index, entryIndex: entryIndex)
-              : Result(totalScore, reset, _fragen[entryIndex].length)
-    );
+        child: index < _fragen[entryIndex].length
+            ? Underquiz(
+                fragen: _fragen,
+                antwort: antwort,
+                index: index,
+                entryIndex: entryIndex)
+            : Result(totalScore, reset, _fragen[entryIndex].length));
   }
 }
-

@@ -51,29 +51,44 @@ class MyAppState extends State<MyApp> {
           " Dazu zählen z.B. die Einrichtung von Hardware, das Aufspielen von Softwarepatches und andere zeitaufwändige IT-Verwaltungsaufgaben."
           " Beim Cloud Computing müssen viele dieser Aufgaben nicht länger ausgeführt werden, sodass sich IT-Teams auf wichtigere Unternehmensziele konzentrieren können."
     ],
+    // WAS IST CLOUD COMPUTING? DEFINITION
+    [
+      "Cloud Computing bedeutet, dass Daten nicht lokal, sondern auf entfernten Servern gespeichert werden."
+      " IT-Dienstleistungen und IT-Ressourcen werden über das Internet bereitgestellt und sind in Echtzeit verfügbar. "
+      "Hardware und Software muss dabei nicht mehr selbst gekauft und betrieben werden, sondern wird vermietet."
+      " Vorteile hierbei sind mehr Flexibilität, Skalierbarkeit und niedrige Kosten, da eine eigene Serverstruktur entfällt."
+    ]
   ];
+
+
+  List<bool> trailings = [false, false, false];
+
 
   final headlines = [
     ["Allgemeines 1", "Allgemeines 2", "Allgemeines 3", "Allgemeines 4"],
-    ["Kosten", "Geschwindigkeit", "Globale Skalierung", "Produktivität"]
+    ["Kosten", "Geschwindigkeit", "Globale Skalierung", "Produktivität"],
+    ["Definition"]
   ];
 
   final List<String> entries = <String>[
     'Allgemeines',
-    'Vorteile von Cloud Computing'
+    'Vorteile von Cloud Computing',
+    'Was ist Cloud Computing?'
   ];
-  Map values = {'Allgemeines': 0, 'Vorteile von Cloud Computing': 1};
+  Map values = {'Allgemeines': 0, 'Vorteile von Cloud Computing': 1, 'Was ist Cloud Computing?': 2};
 
   var index = 0;
   bool isOverview = true;
   var entryIndex = 0;
   String quizAtOverview;
   String key;
-  List<String> assets = ["assets/cloud.jpg", "assets/cloud2.jpg"];
-  List<List<String>> img = [["assets/cloud.jpg", "assets/cloud2.jpg", "", ""], ["assets/cloud.jpg", "assets/cloud2.jpg", "", ""]];
+  List<String> assets = ["assets/cloud.jpg", "assets/cloud2.jpg", "assets/cloud.jpg"];
+  List<List<String>> img = [["assets/cloud.jpg", "assets/cloud2.jpg", "", ""], ["assets/cloud.jpg", "assets/cloud2.jpg", "", ""], ["assets/cloud.jpg"]];
 
   int qindex = 0;
   int qtotalScore = 0;
+  bool switcher = false;
+  bool done = false;
 
   void reset() {
     setState(() {
@@ -116,6 +131,21 @@ class MyAppState extends State<MyApp> {
     setState(() {
       isOverview = !isOverview;
       reset();
+    });
+  }
+  void toOverviewSwitcher() {
+    setState(() {
+      isOverview = !isOverview;
+      reset();
+      trailings[entryIndex] = true;
+      for(bool item in trailings){
+        if (item == false){
+          done = false;
+        }
+        else{
+
+        }
+      }
     });
   }
 
@@ -169,6 +199,16 @@ class MyAppState extends State<MyApp> {
     );
   }
 
+  Widget switchTrailing(a){
+    if (a){
+      a = false;
+      return Icon(Icons.check_circle_outline);
+    }
+    if(!a){
+      return Icon(Icons.radio_button_unchecked);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isOverview) {
@@ -185,14 +225,15 @@ class MyAppState extends State<MyApp> {
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                     child: ListTile(
-                  onTap: () {
-                    key = entries[index];
-                    toContent();
-                  },
-                  tileColor: Colors.white,
-                  title: Text('${entries[index]}'),
-                  leading: Image.asset(assets[index]),
-                ));
+                      onTap: () {
+                        key = entries[index];
+                        toContent();
+                      },
+                      tileColor: Colors.white,
+                      title: Text('${entries[index]}'),
+                      leading: Image.asset(assets[index]),
+                      trailing: switchTrailing(trailings[index]),
+                    ));
               }),
         ),
       );
@@ -258,7 +299,7 @@ class MyAppState extends State<MyApp> {
                 Quiz(qindex, qtotalScore, reset, antwort, entryIndex),
                 FlatButton(onPressed: nm, child: Text("Lektion neu starten")),
                 RaisedButton(
-                    onPressed: toOverview, child: Text("Zur Übersicht"))
+                    onPressed: toOverviewSwitcher, child: Text("Zur Übersicht"))
               ],
             ),
           ),

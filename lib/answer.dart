@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import './Quiz.dart';
 
 class Answer extends StatelessWidget {
 

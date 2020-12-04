@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Frage.dart';
 import 'answer.dart';
-//import './Quiz.dart';
 
 class Underquiz extends StatelessWidget {
   final List<List<Map<String, Object>>> fragen;
