@@ -61,34 +61,39 @@ class MyAppState extends State<MyApp> {
   ];
 
 
+
+
+// Listen und dicts
   List<bool> trailings = [false, false, false];
-
-
   final headlines = [
     ["Allgemeines 1", "Allgemeines 2", "Allgemeines 3", "Allgemeines 4"],
     ["Kosten", "Geschwindigkeit", "Globale Skalierung", "Produktivität"],
     ["Definition"]
   ];
-
   final List<String> entries = <String>[
     'Allgemeines',
     'Vorteile von Cloud Computing',
     'Was ist Cloud Computing?'
   ];
   Map values = {'Allgemeines': 0, 'Vorteile von Cloud Computing': 1, 'Was ist Cloud Computing?': 2};
-
-  var index = 0;
-  bool isOverview = true;
-  var entryIndex = 0;
-  String quizAtOverview;
-  String key;
   List<String> assets = ["assets/cloud.jpg", "assets/cloud2.jpg", "assets/cloud.jpg"];
   List<List<String>> img = [["assets/cloud.jpg", "assets/cloud2.jpg", "", ""], ["assets/cloud.jpg", "assets/cloud2.jpg", "", ""], ["assets/cloud.jpg"]];
 
-  int qindex = 0;
-  int qtotalScore = 0;
+// Booleans
+  bool isOverview = true;
   bool switcher = false;
   bool done = false;
+  bool allDone = false;
+
+//Strings
+  String quizAtOverview;
+  String key;
+
+// Integer
+  int qindex = 0;
+  int qtotalScore = 0;
+  var index = 0;
+  var entryIndex = 0;
 
   void reset() {
     setState(() {
@@ -134,6 +139,7 @@ class MyAppState extends State<MyApp> {
     });
   }
   void toOverviewSwitcher() {
+    List tmp = [];
     setState(() {
       isOverview = !isOverview;
       reset();
@@ -142,10 +148,14 @@ class MyAppState extends State<MyApp> {
         if (item == false){
           done = false;
         }
-        else{
-
+        if(item == true){
+          tmp.add(item);
+          if(tmp.length==trailings.length){
+            allDone = true;
+          }
         }
       }
+      tmp = [];
     });
   }
 
@@ -211,7 +221,29 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (isOverview) {
+    if(allDone){
+      return MaterialApp(
+          home: Scaffold(
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                title: Text("Cloud-Computing"),
+                backgroundColor: Colors.lightBlueAccent,
+              ),
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Center(child: Text("Du hast es geschafft", style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),),),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 90.0, 0.0, 0.0),
+                    child: Image.asset("assets/allDoneGif.gif"),
+                  )
+                ],
+              ),
+          ),
+      );
+    }
+
+    else if (isOverview) {
       return MaterialApp(
         home: Scaffold(
           backgroundColor: Colors.white,
@@ -239,7 +271,7 @@ class MyAppState extends State<MyApp> {
       );
     }
 
-    if (!isOverview) {
+    else if (!isOverview) {
       if (index < text[entryIndex].length) {
         return MaterialApp(
           home: Scaffold(
