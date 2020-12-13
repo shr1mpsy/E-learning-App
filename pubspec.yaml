@@ -52,8 +52,12 @@ flutter:
   assets:
     - assets/cloud.jpg
     - assets/cloud2.jpg
-    - assets/allDoneGif.gif
     - assets/vorteileCC.jpg
+    - assets/geschichteCC.jpg
+    - assets/moeglichkeitenCC.jpg
+    - assets/nachteileCC.jpg
+    - assets/verschArtenCC.jpg
+    - assets/verschServiceCC.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
