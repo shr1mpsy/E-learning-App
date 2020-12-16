@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'underquiz.dart';
 import 'result.dart';
 
-var _fragen = [
+List<List<List<Map<String, Object>>>> _fragen = [[
   // Definition
   [
     {
@@ -109,6 +109,13 @@ var _fragen = [
       ]
     }
   ],
+],
+[
+
+],
+  [
+
+  ]
 ];
 
 class Quiz extends StatelessWidget {
@@ -117,18 +124,21 @@ class Quiz extends StatelessWidget {
   final Function reset;
   final Function antwort;
   final int entryIndex;
+  final int contentIndex;
 
-  Quiz(this.index, this.totalScore, this.reset, this.antwort, this.entryIndex);
+  Quiz(this.index, this.totalScore, this.reset, this.antwort, this.entryIndex, this.contentIndex);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: index < _fragen[entryIndex].length
+        child: index < _fragen[contentIndex][entryIndex].length
             ? Underquiz(
                 fragen: _fragen,
                 antwort: antwort,
                 index: index,
-                entryIndex: entryIndex)
-            : Result(totalScore, reset, _fragen[entryIndex].length));
+                entryIndex: entryIndex,
+                contentIndex: contentIndex
+        )
+            : Result(totalScore, reset, _fragen[contentIndex][entryIndex].length));
   }
 }

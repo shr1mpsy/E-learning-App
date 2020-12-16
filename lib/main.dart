@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './Quiz.dart';
 
@@ -11,8 +12,30 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  //Content
+  List contentEntries = ["Cloud Computing", "Hacking", "AD"];
+  List coursePictures = ["assets/cloud.jpg", "assets/cloud2.jpg", "assets/geschichteCC.jpg"];
+  Map contentValues = {"Cloud Computing": 0, "Hacking":1, "AD": 2};
+  int contentIndex = 0;
+
+  List contentTrailings = [false, false, false];
+
+  Map fromCoursesToContentOverview(){
+    setState(() {
+      contentIndex = contentValues[key];
+      isIntro = true;
+      isContent = false;
+      for(int i = 0; i< entries[contentIndex].length;i++){
+        values[entries[contentIndex][i]] = i;
+      }
+    });
+    return values;
+  }
+
+
   // Texte
   final text = [
+    [
     // WAS IST CLOUD COMPUTING? DEFINITION
     [
       "Cloud Computing bedeutet, dass Daten nicht lokal, sondern auf entfernten Servern gespeichert werden."
@@ -26,8 +49,8 @@ class MyAppState extends State<MyApp> {
     [
       //Kosten
       "Beim Cloud Computing fallen keinerlei Investitionskosten für den Erwerb von Hardware und Software oder die"
-        " Einrichtung und den Betrieb lokaler Rechenzentren an, die Serverracks, Stromversorgung und Kühlung rund "
-        "um die Uhr sowie IT-Experten zur Verwaltung der Infrastruktur erforderlich machen. Da kommt schnell einiges zusammen.",
+          " Einrichtung und den Betrieb lokaler Rechenzentren an, die Serverracks, Stromversorgung und Kühlung rund "
+          "um die Uhr sowie IT-Experten zur Verwaltung der Infrastruktur erforderlich machen. Da kommt schnell einiges zusammen.",
       //Geschwindigkeit
       "Da die meisten Cloud Computing-Dienste bedarfsgesteuert und als Self-Service-Angebote bereitgestellt werden,"
           " lassen sich selbst äußerst große Mengen an Computingressourcen innerhalb weniger Minuten bereitstellen."
@@ -63,7 +86,7 @@ class MyAppState extends State<MyApp> {
       "Nutzen Sie Cloud-Dienste, geben Sie meist sehr persönliche Daten preis. Da die Server vieler Cloud-Anbieter im EU-Ausland liegen, "
           "greifen die Datenschutzgesetze des Heimatlandes.So riskieren Sie einen schlechteren Schutz Ihrer persönlichen Daten.",
       "Manchmal können Daten in der Cloud verloren gehen. Dies kann zum Beispiel durch eine Cyberattacke oder durch einen Stromausfall passieren."
-      "Dies passiert aber ziemlich selten, da oft backups gemacht werden, um solchen Datenverlusten vorzubeugen.",
+          "Dies passiert aber ziemlich selten, da oft backups gemacht werden, um solchen Datenverlusten vorzubeugen.",
       "Dadurch, dass man auf Resourcen einer anderen Firma zugreift, macht man sich natürlich von dieser abhängig. "
           "Man muss dadurch also teilweise Preissteigerungen und andere Maßnahmen protestlos hinnehmen und es bleibt der Firma trotzdem ein potentielles Druckmittel gegen dich."
     ],
@@ -105,69 +128,101 @@ class MyAppState extends State<MyApp> {
     //Historie
     [
       "•	Geschichte des Cloud Computing geht bis in die 1960er Jahre zurück. Damals entstanden die ersten Ideen, wie man bestimmte IT-Ressourcen wie zum Beispiel Rechenleistung und Anwendungen als gesammelte Utility einer breiten Masse zur Verfügung stellen kann.\n\n"
-        "•	Erkenntnissen der Industriellen Revolution: Energie soll nicht überall erzeugt werden, wo man sie braucht, sondern Großanbieter verteilen die Energie nach Bedarf.",
+          "•	Erkenntnissen der Industriellen Revolution: Energie soll nicht überall erzeugt werden, wo man sie braucht, sondern Großanbieter verteilen die Energie nach Bedarf.",
       "•	technischen Voraussetzungen wie stabiles Internet und die multimandanten Fähigkeit von IT-Systemen waren noch nicht gegeben"
-        "•	gab es die ersten Host-Systeme mit zentralen Terminals und Rechnern.\n\n"
-        "•	Firma DATEV entstand in den 1960er Jahren.\n\n"
-        "•	fungierten alle Dienstleistungen rechenzentrumsbasiert.\n\n",
+          "•	gab es die ersten Host-Systeme mit zentralen Terminals und Rechnern.\n\n"
+          "•	Firma DATEV entstand in den 1960er Jahren.\n\n"
+          "•	fungierten alle Dienstleistungen rechenzentrumsbasiert.\n\n",
       "•	umfassten Eingabe der Daten in Datenerfassungsgeräten vor Ort, Versand der Lochstreifen per Post zum Rechenzentrum (zunächst von IBM, dann seit 1969 eigenes Rechenzentrum) und Rücksendung der Auswertungen per Post an die Kanzlei.\n\n"
-        "•	ersten Meilenstein in der Entwicklung: Firma Intel in den frühen 70er Jahren\n\n"
-        "•	erste Serie von gefertigten Mikroprozessoren auf den Markt gebracht. : Grundstein für Computer für den Massenmarkt war gelegt.\n\n",
+          "•	ersten Meilenstein in der Entwicklung: Firma Intel in den frühen 70er Jahren\n\n"
+          "•	erste Serie von gefertigten Mikroprozessoren auf den Markt gebracht. : Grundstein für Computer für den Massenmarkt war gelegt.\n\n",
       "•	5 bis 6 Jahre später Gründung Apple und Microsoft : Initiatoren für den Heimcomputermarkt gelten.\n\n"
-        "•	1981 ist die Firma IBM in den Markt eingestiegen: neuer Industriestandard entsteht\n\n"
-        "•	wird der Prozessor von Intel und das Betriebssystem von Microsoft geliefert.\n\n"
-        "•	Innerhalb dieser Unternehmen wurden die Computer dabei über das Ethernet, sprich Kabel, mit dem Server vernetzt\n\n"
-        "•	PCs immer leistungsfähiger  ihnen auch gerechnet wurde und Daten verarbeitet warden\n\n",
+          "•	1981 ist die Firma IBM in den Markt eingestiegen: neuer Industriestandard entsteht\n\n"
+          "•	wird der Prozessor von Intel und das Betriebssystem von Microsoft geliefert.\n\n"
+          "•	Innerhalb dieser Unternehmen wurden die Computer dabei über das Ethernet, sprich Kabel, mit dem Server vernetzt\n\n"
+          "•	PCs immer leistungsfähiger  ihnen auch gerechnet wurde und Daten verarbeitet warden\n\n",
       "•	Diese Arbeit teilten sich dann der PC und der Server = Prinzip nennt man auch Client-Server-Prinzip\n\n"
-        "•	PCs Software installiert / Updates immer neu aufgespielt warden\n\n"
-        "•	Bedeutet hohe Leistungsfähigkeit jedoch aber auch hohen Wartungsaufwand\n\n"
-        "•	System funktionierte nur im Unternehmen jedoch nicht stanndortübergreifend\n\n"
-        "•	Großer Durchbruch erst in den 90er Jahren\n\n",
+          "•	PCs Software installiert / Updates immer neu aufgespielt warden\n\n"
+          "•	Bedeutet hohe Leistungsfähigkeit jedoch aber auch hohen Wartungsaufwand\n\n"
+          "•	System funktionierte nur im Unternehmen jedoch nicht stanndortübergreifend\n\n"
+          "•	Großer Durchbruch erst in den 90er Jahren\n\n",
       "•	1991: Freigabe des World Wide Web vom Schweizer Forschunginstitut CERN für die Öffentlichkeit  (Entwicklung durch Britischenj Physiker und Informatiker Tim Berners-Lee => entwickelte http auch HTML bildet Basis für Internet Boom\n \n"
-        "•	Konzept befasste ebenfalls erster Web Browser, erste Website auch ersten Web Server dadurch ist das was noch 1960 fehltze um die Cloud umzusetzen jetzt real geworden\n\n"
-        "•	Mit der beginnenden Virtualisierung folgte der erste Schritt in Richtung Cloud (auf einem anderen Gerät dargestellt)\n\n",
+          "•	Konzept befasste ebenfalls erster Web Browser, erste Website auch ersten Web Server dadurch ist das was noch 1960 fehltze um die Cloud umzusetzen jetzt real geworden\n\n"
+          "•	Mit der beginnenden Virtualisierung folgte der erste Schritt in Richtung Cloud (auf einem anderen Gerät dargestellt)\n\n",
       "•	Im selben Zeitraum tauchte der Begriff Application Service Providing (ASP) auf. Bei ASP wurde auf einem zentralen Server für jeden User der PC simuliert\n\n"
-        "•	Dadurch wird Client-Server-Prinzip standortsunabhängig braucht allerdingsenorme technische Ressourcen (bei 100 usern zum arbeiten brauchte man 100 mal installiertes windows) \n\n"
-        "•	Asp scheiterte weil war nicht wirtschaftlich gut ( Begriff ist in Vergessenheit geraten)\n\n"
-        "•	Ende der 90er Jahre entstand Multi-Tenant-Software-Architektur (ermöglicht es, dass eine Software von mehreren Unternehmen gleichzeitig über den Browser bedient werden kann, ohne das das Ausspähen von Daten der anderen möglich ist)\n\n",
+          "•	Dadurch wird Client-Server-Prinzip standortsunabhängig braucht allerdingsenorme technische Ressourcen (bei 100 usern zum arbeiten brauchte man 100 mal installiertes windows) \n\n"
+          "•	Asp scheiterte weil war nicht wirtschaftlich gut ( Begriff ist in Vergessenheit geraten)\n\n"
+          "•	Ende der 90er Jahre entstand Multi-Tenant-Software-Architektur (ermöglicht es, dass eine Software von mehreren Unternehmen gleichzeitig über den Browser bedient werden kann, ohne das das Ausspähen von Daten der anderen möglich ist)\n\n",
       "•	CRM-Software Salesforce in den USA zunutze jedoch Deutschland war dagegen myfactory der große Pionier\n\n"
-        "•	Unternehmen schnell von anderen abheben, da es zum einem eine höhere Flexibilität und zum anderen eine Abrechnung nach Nutzung gibt. Zudem konnten zum ersten Mal viele Unternehmen eine zentrale Software gleichzeitig nutzen\n\n"
-        "•	Dadurch entstand der Cloud Boom (rasante Entwicklung)\n\n",
+          "•	Unternehmen schnell von anderen abheben, da es zum einem eine höhere Flexibilität und zum anderen eine Abrechnung nach Nutzung gibt. Zudem konnten zum ersten Mal viele Unternehmen eine zentrale Software gleichzeitig nutzen\n\n"
+          "•	Dadurch entstand der Cloud Boom (rasante Entwicklung)\n\n",
       "•	In den 2010er Jahren wird jeder IT-Service dank Cloud-Computing global und 24/7 nutzbar. So entstanden auf Basis dieser Technologie eine Vielzahl an Cloudlösungen, die unser aller Leben verändert haben.\n\n"
-        "•	Trotzdem müssen noch einige Systeme weitergehend entwickelt werden, denn multimandantenfähigkeit, dass jede Lösung vollständig neu entwickelt werden muss.\n\n"
-        "•	Natürlich ist das nicht alles. Denn die Geschichte des Cloud Computing schreibt sich von selbst weiter. Einen wichtigen Begriff, der damit im Zusammenhang steht, "
-           "ist das Internet of Things. Hier kommunizieren Alltagsgeräte via Cloud miteinander und werden damit zu smarten Geräten.\n\n"
-  ],
-  //Einsatzmöglichkeiten
+          "•	Trotzdem müssen noch einige Systeme weitergehend entwickelt werden, denn multimandantenfähigkeit, dass jede Lösung vollständig neu entwickelt werden muss.\n\n"
+          "•	Natürlich ist das nicht alles. Denn die Geschichte des Cloud Computing schreibt sich von selbst weiter. Einen wichtigen Begriff, der damit im Zusammenhang steht, "
+          "ist das Internet of Things. Hier kommunizieren Alltagsgeräte via Cloud miteinander und werden damit zu smarten Geräten.\n\n"
+    ],
+    //Einsatzmöglichkeiten
+    [
+      "Sie verwenden wahrscheinlich gerade Cloud Computing, auch wenn Ihnen das nicht bewusst ist. Sobald Sie einen Online Service nutzen, "
+          "um E-Mails zu versenden, Dokumente zu bearbeiten, Filme oder Fernsehen zu schauen, Musik zu hören, zu spielen oder Bilder und "
+          "andere Dateien zu speichern, ist wahrscheinlich Cloud Computing hinter den Kulissen aktiv. Die ältesten Cloud Computing Services "
+          "sind kaum ein Jahrzehnt alt, aber eine Vielzahl von Unternehmen - von kleinen Start-ups über globale Konzerne bis hin zu Regierungsbehörden "
+          "und gemeinnützigen Organisationen - nutzen die Technologie bereits aus einer Vielzahl von Gründen. Hier ein paar Beispiele was mit Cloud Computing möglich ist:",
+      "Schnelle Erstellung, Bereitstellung und Skalierung von Web-, Mobile- und API-Anwendungen auf jeder Plattform. Greifen Sie auf die Ressourcen zu, die Sie benötigen,"
+          " um alle Anforderungen an Leistung, Sicherheit und Compliance zu erfüllen.",
+      "Schützen Sie Ihre Daten kostengünstig und effektiv, indem Sie Ihre Daten über das Internet an ein externes Cloud-Speichersystem übertragen, auf das von jedem Ort und jedem Gerät aus zugegriffen werden kann.",
+      "Verbinden Sie sich mit Ihrem Publikum global, jederzeit und auf jedem Gerät mit hochauflösendem Video und Audio.",
+      "Mit On-Demand-Software, auch bekannt als Software as a Service (SaaS), können Sie Ihren Kunden die neuesten Softwareversionen und Updates anbieten - jederzeit und überall."
+    ]
+    ],
   [
-    "Sie verwenden wahrscheinlich gerade Cloud Computing, auch wenn Ihnen das nicht bewusst ist. Sobald Sie einen Online Service nutzen, "
-        "um E-Mails zu versenden, Dokumente zu bearbeiten, Filme oder Fernsehen zu schauen, Musik zu hören, zu spielen oder Bilder und "
-        "andere Dateien zu speichern, ist wahrscheinlich Cloud Computing hinter den Kulissen aktiv. Die ältesten Cloud Computing Services "
-        "sind kaum ein Jahrzehnt alt, aber eine Vielzahl von Unternehmen - von kleinen Start-ups über globale Konzerne bis hin zu Regierungsbehörden "
-        "und gemeinnützigen Organisationen - nutzen die Technologie bereits aus einer Vielzahl von Gründen. Hier ein paar Beispiele was mit Cloud Computing möglich ist:",
-    "Schnelle Erstellung, Bereitstellung und Skalierung von Web-, Mobile- und API-Anwendungen auf jeder Plattform. Greifen Sie auf die Ressourcen zu, die Sie benötigen,"
-        " um alle Anforderungen an Leistung, Sicherheit und Compliance zu erfüllen.",
-    "Schützen Sie Ihre Daten kostengünstig und effektiv, indem Sie Ihre Daten über das Internet an ein externes Cloud-Speichersystem übertragen, auf das von jedem Ort und jedem Gerät aus zugegriffen werden kann.",
-    "Verbinden Sie sich mit Ihrem Publikum global, jederzeit und auf jedem Gerät mit hochauflösendem Video und Audio.",
-    "Mit On-Demand-Software, auch bekannt als Software as a Service (SaaS), können Sie Ihren Kunden die neuesten Softwareversionen und Updates anbieten - jederzeit und überall."
+
   ]
-  ];//s
-
-
-
+  ]; //s
 
 // Listen und dicts
-  List<bool> trailings = [false, false, false, false, false, false, false];//s
-  final headlines = [
+
+  List trailings = [[false, false, false, false, false, false, false],[], []]; //s
+  final headlines = [[
     ["Definition", "Warum heißt es Cloud?"],
-    ["Kosten", "Geschwindigkeit", "Globale Skalierung", "Produktivität", "Leistung", "Zuverlässigkeit", "Sicherheit"],
-    ["Netzverbindung", "Wachsender Funktionsumfang", "Sicherheit", "Datenverlust durch die Cloud", "Abhängigkeit"],
+    [
+      "Kosten",
+      "Geschwindigkeit",
+      "Globale Skalierung",
+      "Produktivität",
+      "Leistung",
+      "Zuverlässigkeit",
+      "Sicherheit"
+    ],
+    [
+      "Netzverbindung",
+      "Wachsender Funktionsumfang",
+      "Sicherheit",
+      "Datenverlust durch die Cloud",
+      "Abhängigkeit"
+    ],
     ["", "Public Cloud", "Private Cloud", "Hybrid Cloud", "Multi Cloud"],
-    ["","IaaS", "PaaS", "Serverless Computing", "SaaS"],
-    ["Historie","Historie","Historie","Historie","Historie","Historie","Historie","Historie","Historie"],
-    ["Einsatzmöglichkeiten von Cloud Computing","Neue Apps und Services erstellen", "Speichern, Sichern und Wiederherstellen von Daten", "Audio- und Videostreams", "Bereitstellung von Software On Demand"]
-  ];//s
-  final List<String> entries = <String>[
+    ["", "IaaS", "PaaS", "Serverless Computing", "SaaS"],
+    [
+      "Historie",
+      "Historie",
+      "Historie",
+      "Historie",
+      "Historie",
+      "Historie",
+      "Historie",
+      "Historie",
+      "Historie"
+    ],
+    [
+      "Einsatzmöglichkeiten von Cloud Computing",
+      "Neue Apps und Services erstellen",
+      "Speichern, Sichern und Wiederherstellen von Daten",
+      "Audio- und Videostreams",
+      "Bereitstellung von Software On Demand"
+    ]],[],[]
+  ]; //s
+  final List entries = [[
     'Was ist Cloud Computing',
     'Vorteile von Cloud Computing',
     "Nachteile von Cloud Computing",
@@ -175,11 +230,33 @@ class MyAppState extends State<MyApp> {
     "Arten von Cloud Services",
     "Geschichte von Cloud Computing",
     "Einsatzmöglichkeiten von Cloud Computing"
-  ];//s
-  Map values = {'Was ist Cloud Computing': 0, 'Vorteile von Cloud Computing': 1, "Nachteile von Cloud Computing": 2, "Verschiedene Arten von Cloud Computing": 3,
-    "Arten von Cloud Services": 4, "Geschichte von Cloud Computing":5, "Einsatzmöglichkeiten von Cloud Computing":6};//s
-  List<String> assets = ["assets/cloud.jpg", "assets/vorteileCC.jpg", "assets/nachteileCC.jpg", "assets/verschArtenCC.jpg", "assets/verschServiceCC.jpg", "assets/geschichteCC.jpg","assets/moeglichkeitenCC.jpg"]; //ListTile   //s
-  List<List<String>> img = [["", ""], ["", "", "", "", "", "", ""], ["","","","",""], ["", "", "","", ""], ["","","","", ""], ["","","","","","","","",""], ["","","","",""]];//s
+  ],
+    [], []
+  ]; //s
+  Map values = Map();
+
+  List assets = [[
+    "assets/cloud.jpg",
+    "assets/vorteileCC.jpg",
+    "assets/nachteileCC.jpg",
+    "assets/verschArtenCC.jpg",
+    "assets/verschServiceCC.jpg",
+    "assets/geschichteCC.jpg",
+    "assets/moeglichkeitenCC.jpg"
+  ],
+    [],[]
+  ]; //ListTile   //s
+  List img = [[
+    ["", ""],
+    ["", "", "", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", "", "", "", "", ""],
+    ["", "", "", "", ""]
+  ],
+    [],[]
+  ]; //s
 
 // Booleans
   bool isOverview = true;
@@ -187,6 +264,8 @@ class MyAppState extends State<MyApp> {
   bool done = false;
   bool allDone = false;
   bool notAlreadyDone = true;
+  bool isIntro = false;
+  bool isContent = true;
 
 //Strings
   String quizAtOverview;
@@ -195,8 +274,8 @@ class MyAppState extends State<MyApp> {
 // Integer
   int qindex = 0;
   int qtotalScore = 0;
-  var index = 0;
-  var entryIndex = 0;
+  int index = 0;
+  int entryIndex = 0;
 
   void reset() {
     setState(() {
@@ -235,26 +314,34 @@ class MyAppState extends State<MyApp> {
     });
   }
 
+  void start(){
+    setState(() {
+      isIntro = false;
+    });
+  }
+
   void toOverview() {
     setState(() {
       isOverview = !isOverview;
       reset();
     });
   }
+
   void toOverviewSwitcher() {
     List tmp = [];
     setState(() {
       isOverview = !isOverview;
       reset();
-      trailings[entryIndex] = true;
-      for(bool item in trailings){
-        if (item == false){
+      trailings[contentIndex][entryIndex] = true;
+      for (bool item in trailings[contentIndex]) {
+        if (item == false) {
           done = false;
         }
-        if(item == true){
+        if (item == true) {
           tmp.add(item);
-          if(tmp.length==trailings.length){
+          if (tmp.length == trailings[contentIndex].length) {
             allDone = true;
+            contentTrailings[contentIndex] = true;
           }
         }
       }
@@ -262,7 +349,7 @@ class MyAppState extends State<MyApp> {
     });
   }
 
-  void toDoneOverview(){
+  void toDoneOverview() {
     setState(() {
       notAlreadyDone = false;
     });
@@ -276,120 +363,192 @@ class MyAppState extends State<MyApp> {
     });
   }
 
+  void toCourses(){
+    setState(() {
+      isContent = true;
+      isIntro = false;
+    });
+  }
+
   //WIDGETS
 
-  Widget picture(path){
-    if (path != ""){
+  Widget picture(path) {
+    if (path != "") {
       return Center(
-          child :Image.asset(
-            path,
-            width: double.infinity,
-            height: 100,
-          )
-      );
-    }
-    else{
+          child: Image.asset(
+        path,
+        width: double.infinity,
+        height: 100,
+      ));
+    } else {
       return Center();
     }
   }
 
-  Widget myText(path){
+  Widget myText(path) {
     return Text(
       path,
       style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-          color: Colors.black38),
+          fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black38),
     );
   }
 
-  Widget headline(path){
+  Widget headline(path) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 20.0),
       child: Center(
           child: Text(
-            path,
-            style: TextStyle(
-                fontSize: 30,
-                color: Colors.black54,
-                fontWeight: FontWeight.w900
-            ),
-          )),
+        path,
+        style: TextStyle(
+            fontSize: 30, color: Colors.black54, fontWeight: FontWeight.w900),
+      )),
     );
   }
 
-  Widget switchTrailing(a){
-    if (a){
+  Widget switchTrailing(a) {
+    if (a) {
       a = false;
       return Icon(Icons.check_circle_outline);
     }
+    if (!a) {
+      return Icon(Icons.radio_button_unchecked);
+    }
+  }
+
+  Widget switchTrailingsCourses(a){
     if(!a){
       return Icon(Icons.radio_button_unchecked);
+    }
+    else if(a){
+      return Icon(Icons.check_circle_outline);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if(allDone & notAlreadyDone){
-      return MaterialApp(
-          home: Scaffold(
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                title: Text("Cloud-Computing"),
-                backgroundColor: Colors.lightBlueAccent,
-              ),
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Center(child: Text("Du hast es geschafft", style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),),),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 90.0, 0.0, 0.0),
-                    child: Image.network("https://media.giphy.com/media/Wvh1de6cFXcWc/giphy.gif"),
-                  )
-                ],
-              ),
-            floatingActionButton: FloatingActionButton(
-                onPressed: toDoneOverview,
-              child: Icon(Icons.keyboard_arrow_down_outlined)),
-          ),
-      );
-    }
-
-    else if (isOverview) {
+    if(isContent){
       return MaterialApp(
         home: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            title: Text("Cloud-Computing"),
+            title: Text("Kurse"),
             backgroundColor: Colors.lightBlueAccent,
           ),
           body: ListView.builder(
               padding: const EdgeInsets.all(8),
-              itemCount: entries.length,
+              itemCount: contentEntries.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                     child: ListTile(
                       onTap: () {
-                        key = entries[index];
-                        toContent();
+                        key = contentEntries[index];
+                        fromCoursesToContentOverview();//
                       },
                       tileColor: Colors.white,
-                      title: Text('${entries[index]}'),
-                      leading: Image.asset(assets[index]),
-                      trailing: switchTrailing(trailings[index]),
+                      title: Text('${contentEntries[index]}'),
+                      leading: Image.asset(coursePictures[index]),
+                      trailing: switchTrailingsCourses(contentTrailings[index]),
                     ));
               }),
         ),
       );
     }
-
+    else if (isIntro) {
+      return MaterialApp(
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: Text(contentEntries[contentIndex]),
+            backgroundColor: Colors.lightBlueAccent,
+          ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(child: Image.asset(coursePictures[contentIndex], height: 310, width: 300,),),
+            Text(
+              contentEntries[contentIndex],
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w900
+              ),
+            )
+          ],
+        ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: start,
+            child: Icon(Icons.keyboard_arrow_down),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        ),
+      );
+    }
+    else if (allDone & notAlreadyDone) {
+      return MaterialApp(
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: Text(contentEntries[contentIndex]),
+            backgroundColor: Colors.lightBlueAccent,
+          ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: Text(
+                  "Du hast es geschafft",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 90.0, 0.0, 0.0),
+                child: Image.network(
+                    "https://media.giphy.com/media/Wvh1de6cFXcWc/giphy.gif"),
+              )
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+              onPressed: toDoneOverview,
+              child: Icon(Icons.keyboard_arrow_down_outlined)),
+        ),
+      );
+    }
+    else if (isOverview) {
+      return MaterialApp(
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: Text(contentEntries[contentIndex]),
+            backgroundColor: Colors.lightBlueAccent,
+            actions: <Widget>[
+              IconButton(icon: Icon(Icons.keyboard_arrow_down), onPressed: toCourses)
+            ],
+          ),
+          body: ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: entries[contentIndex].length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                    child: ListTile(
+                  onTap: () {
+                    key = entries[contentIndex][index];
+                    toContent();
+                  },
+                  tileColor: Colors.white,
+                  title: Text('${entries[contentIndex][index]}'),
+                  leading: Image.asset(assets[contentIndex][index]),
+                  trailing: switchTrailing(trailings[contentIndex][index]),
+                ));
+              }),
+        ),
+      );
+    }
     else if (!isOverview) {
-      if (index < text[entryIndex].length) {
+      if (index < text[contentIndex][entryIndex].length) {
         return MaterialApp(
           home: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              title: Text("Cloud-Computing"),
+              title: Text(contentEntries[contentIndex]),
               backgroundColor: Colors.lightBlueAccent,
             ),
             body: Column(
@@ -399,9 +558,9 @@ class MyAppState extends State<MyApp> {
                     margin: EdgeInsets.all(19.0),
                     child: Column(
                       children: <Widget>[
-                        picture(img[entryIndex][index]),
-                        headline(headlines[entryIndex][index]),
-                        myText(text[entryIndex][index]),
+                        picture(img[contentIndex][entryIndex][index]),
+                        headline(headlines[contentIndex][entryIndex][index]),
+                        myText(text[contentIndex][entryIndex][index]),
                       ],
                     )),
                 Row(
@@ -430,17 +589,18 @@ class MyAppState extends State<MyApp> {
                 child: Icon(Icons.arrow_forward_ios_outlined)),
           ),
         );
-      } else {
+      }
+      else {
         return MaterialApp(
           home: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              title: Text("Cloud-Computing"),
+              title: Text(contentEntries[contentIndex]),
               backgroundColor: Colors.lightBlueAccent,
             ),
             body: Column(
               children: <Widget>[
-                Quiz(qindex, qtotalScore, reset, antwort, entryIndex),
+                Quiz(qindex, qtotalScore, reset, antwort, entryIndex, contentIndex),
                 FlatButton(onPressed: nm, child: Text("Lektion neu starten")),
                 RaisedButton(
                     onPressed: toOverviewSwitcher, child: Text("Zur Übersicht"))
