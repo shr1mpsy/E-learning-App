@@ -41,15 +41,18 @@ class MyAppState extends State<MyApp> {
     [
       // WAS IST CLOUD COMPUTING? DEFINITION
       [
-        "Cloud Computing bedeutet, dass Daten nicht lokal, sondern auf entfernten Servern gespeichert werden."
-            " IT-Dienstleistungen und IT-Ressourcen werden über das Internet bereitgestellt und sind in Echtzeit verfügbar. "
-            "Hardware und Software muss dabei nicht mehr selbst gekauft und betrieben werden, sondern wird vermietet."
-            " Vorteile hierbei sind mehr Flexibilität, Skalierbarkeit und niedrige Kosten, da eine eigene Serverstruktur entfällt.",
-        "Eine Cloud heißt Cloud weil die dahinterliegenden Strukturen und die Server auf welchen die Daten liegen für den Nutzer unsichtbar und kaum von Bedeutung sind. "
-            "Sozusagen ist dem Nutzer all das verhüllt wie bei einer Wolke oder in Englisch Cloud."
+        "Bei Cloud Computing werden deine Daten auf entfernten Severn und nicht lokal auf einem Rechner gespeichert. Eine Cloud ist also im Grunde 'nur' ein riesiges Netzwerk von Servern, "
+            "welche über die ganze Welt verteilt ist. Das Gespeicherte ist dann über das Internet von überall in Echtzeit abrufbar. "
+            "Die Server und die Kapazitäten werden meißt vermietet, weil das Ganze nur dadurch Sinn macht und man nur so alle die Vorteile von Cloud Computing richtig ausnutzen kann."
+            "Diese Art der Datenverwaltung birgt nämlich sehr viele Vorteile in sich, die wir aber später im Kurs noch alle kennenlernen werden.",
+        "Aber warum heißt es dann Cloud? Hat das ein Sinn? \nNaja, eine Cloud heißt deswegen Cloud, weil die dahinterliegenden Strukturen und die Server auf welchen die Daten liegen für den Nutzer unsichtbar und kaum von Bedeutung sind. "
+            "Sozusagen ist dem Nutzer all das verhüllt wie bei einer Wolke oder im Englischen: Cloud. Außerdem schwebt eine Wolke weit oben über einem und überall auf der Welt gibt es sie. "
+            "Dies ist eine Anekdote dafür, dass eine Cloud von überall auf der Welt von jedem erreichbar und nutzbar ist. Der Name ist also durchaus treffend."
       ],
       //Vorteile von Cloud Computing
       [
+        //Einleitung
+        "Hmm... Aber warum macht man das Ganze denn überhaupt und mietet sich Server? Was sind denn die Vorteile davon? Naja, es gibt viele...",
         //Kosten
         "Beim Cloud Computing fallen keinerlei Investitionskosten für den Erwerb von Hardware und Software oder die"
             " Einrichtung und den Betrieb lokaler Rechenzentren an, die Serverracks, Stromversorgung und Kühlung rund "
@@ -111,6 +114,7 @@ class MyAppState extends State<MyApp> {
             "verschiedene Cloud Services oder Funktionen von verschiedenen Anbietern auszuwählen. Multi Cloud Deployments können nützlich sein, um die Kosten für Testumgebungen "
             "zu kompensieren und internen Entwicklern mehr Leistung bei geringeren Kosten zu bieten."
       ],
+      //Arten von Cloud Services
       [
         "Die meisten Cloud Computing Services lassen sich in vier große Kategorien einteilen: Infrastructure as a Service (IaaS), Platform as a Service (PaaS), "
             "Serverless und Software as a Service (SaaS). Diese werden manchmal als 'Cloud Computing Stack' bezeichnet, weil sie aufeinander aufbauen. Ihre Eigenschaften "
@@ -178,20 +182,25 @@ class MyAppState extends State<MyApp> {
         "Mit On-Demand-Software, auch bekannt als Software as a Service (SaaS), können Sie Ihren Kunden die neuesten Softwareversionen und Updates anbieten - jederzeit und überall."
       ]
     ],
+    [],
     []
   ];
 
 // Listen und dicts
 
+  //lokal
   List trailings = [
     [false, false, false, false, false, false, false],
     [],
     []
-  ]; //s
+  ];
+
+  //lokal
   final headlines = [
     [
-      ["Definition", "Warum heißt es Cloud?"],
+      ["Definition", "Namensherkunft"],
       [
+        ""
         "Kosten",
         "Geschwindigkeit",
         "Globale Skalierung",
@@ -231,6 +240,8 @@ class MyAppState extends State<MyApp> {
     [],
     []
   ];
+
+  //global
   final List entries = [
     [
       'Was ist Cloud Computing',
@@ -243,10 +254,12 @@ class MyAppState extends State<MyApp> {
     ],
     [],
     []
-  ]; //s
+  ];
+
+  // Map um entryIndex zu bekommen //global
   Map values = Map();
 
-  //Bilder für ListTile
+  //Bilder für ListTile //global
   List assets = [
     [
       "assets/cloud.jpg",
@@ -261,11 +274,11 @@ class MyAppState extends State<MyApp> {
     []
   ];
 
-  //Bilder für Content
+  //Bilder für Content //lokal
   List img = [
     [
       ["", ""],
-      ["", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
       ["", "", "", "", ""],
       ["", "", "", "", ""],
       ["", "", "", "", ""],
@@ -412,15 +425,22 @@ class MyAppState extends State<MyApp> {
   }
 
   Widget headline(path) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 20.0),
-      child: Center(
-          child: Text(
-        path,
-        style: TextStyle(
-            fontSize: 30, color: Colors.black54, fontWeight: FontWeight.w900),
-      )),
-    );
+    if (path != ""){
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 20.0),
+        child: Center(
+            child: Text(
+              path,
+              style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.w900),
+            )),
+      );
+    }
+    else{
+      return Text("\n");
+    }
   }
 
   Widget switchTrailing(a) {
@@ -621,6 +641,7 @@ class MyAppState extends State<MyApp> {
               backgroundColor: Colors.lightBlueAccent,
             ),
             body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Quiz(qindex, qtotalScore, reset, antwort, entryIndex,
                     contentIndex),

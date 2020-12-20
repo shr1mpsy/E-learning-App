@@ -130,15 +130,23 @@ class Quiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: index < _fragen[contentIndex][entryIndex].length
-            ? Underquiz(
-                fragen: _fragen,
-                antwort: antwort,
-                index: index,
-                entryIndex: entryIndex,
-                contentIndex: contentIndex
-        )
-            : Result(totalScore, reset, _fragen[contentIndex][entryIndex].length));
+    if(_fragen[contentIndex][entryIndex].length != 0){
+      return Container(
+          child: index < _fragen[contentIndex][entryIndex].length
+              ? Underquiz(
+                  fragen: _fragen,
+                  antwort: antwort,
+                  index: index,
+                  entryIndex: entryIndex,
+                  contentIndex: contentIndex
+          )
+              : Result(totalScore, reset, _fragen[contentIndex][entryIndex].length));}
+    else{
+      return Center(
+        child: Text("Hier ist kein Quiz nötig. Du kannst gleich weiter machen!",
+          style: TextStyle(
+            fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black38),),
+      );
+    }
   }
 }
