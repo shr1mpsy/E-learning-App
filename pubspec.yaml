@@ -59,6 +59,16 @@ flutter:
     - assets/verschArtenCC.jpg
     - assets/verschServiceCC.jpg
 
+    # "Vorteile" Package
+    - assets/vorteileCC/coins.jpg
+    - assets/vorteileCC/fragezeichen.jpg
+    - assets/vorteileCC/leistungen.jpg
+    - assets/vorteileCC/produktiv.jpg
+    - assets/vorteileCC/scalierbar.jpg
+    - assets/vorteileCC/sicherheit.jpg
+    - assets/vorteileCC/speed.jpg
+    - assets/vorteileCC/zuverl.jpg
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

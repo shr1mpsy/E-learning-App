@@ -42,11 +42,11 @@ class MyAppState extends State<MyApp> {
       // WAS IST CLOUD COMPUTING? DEFINITION
       [
         "Bei Cloud Computing werden deine Daten auf entfernten Severn und nicht lokal auf einem Rechner gespeichert. Eine Cloud ist also im Grunde 'nur' ein riesiges Netzwerk von Servern, "
-            "welche über die ganze Welt verteilt ist. Das Gespeicherte ist dann über das Internet von überall in Echtzeit abrufbar. "
+            "welche über die ganze Welt verteilt ist. Das Gespeicherte ist dann über das Internet von überall in Echtzeit abrufbar. \n\n"
             "Die Server und die Kapazitäten werden meißt vermietet, weil das Ganze nur dadurch Sinn macht und man nur so alle die Vorteile von Cloud Computing richtig ausnutzen kann."
             "Diese Art der Datenverwaltung birgt nämlich sehr viele Vorteile in sich, die wir aber später im Kurs noch alle kennenlernen werden.",
-        "Aber warum heißt es dann Cloud? Hat das ein Sinn? \nNaja, eine Cloud heißt deswegen Cloud, weil die dahinterliegenden Strukturen und die Server auf welchen die Daten liegen für den Nutzer unsichtbar und kaum von Bedeutung sind. "
-            "Sozusagen ist dem Nutzer all das verhüllt wie bei einer Wolke oder im Englischen: Cloud. Außerdem schwebt eine Wolke weit oben über einem und überall auf der Welt gibt es sie. "
+        "Aber warum heißt es dann Cloud? Hat das ein Sinn? \n\nNaja, eine Cloud heißt deswegen Cloud, weil die dahinterliegenden Strukturen und die Server auf welchen die Daten liegen für den Nutzer unsichtbar und kaum von Bedeutung sind. "
+            "Sozusagen ist dem Nutzer all das verhüllt wie bei einer Wolke oder im Englischen: Cloud. \nAußerdem schwebt eine Wolke weit oben über einem und überall auf der Welt gibt es sie. "
             "Dies ist eine Anekdote dafür, dass eine Cloud von überall auf der Welt von jedem erreichbar und nutzbar ist. Der Name ist also durchaus treffend."
       ],
       //Vorteile von Cloud Computing
@@ -54,23 +54,23 @@ class MyAppState extends State<MyApp> {
         //Einleitung
         "Hmm... Aber warum macht man das Ganze denn überhaupt und mietet sich Server? Was sind denn die Vorteile davon? Naja, es gibt viele...",
         //Kosten
-        "Beim Cloud Computing fallen keinerlei Investitionskosten für den Erwerb von Hardware und Software oder die"
-            " Einrichtung und den Betrieb lokaler Rechenzentren an, die Serverracks, Stromversorgung und Kühlung rund "
-            "um die Uhr sowie IT-Experten zur Verwaltung der Infrastruktur erforderlich machen. Da kommt schnell einiges zusammen.",
+        "Der erste und ausschlaggebenste Vorteil beim Cloud Computing ist, dass keinerlei Investitionskosten für den Erwerb von Hardware und Software oder die"
+            " Einrichtung und den Betrieb lokaler Rechenzentren anfallen, weil man die Serverkapazitäten ja mietet und sich diese nicht selbst anschaffen muss. \nHierbei ist das was man zahlt auch immer "
+            "nur genau das, was man auch nutzt, sodass keine Kosten für ungenutzte Resourcen anfallen. \n\n"
+            "Außerdem kümmern sich IT-Experten rund um die Uhr um die Server, welshalb man selber keine einstellen muss, was natürlich wieder enorm Kosten spart.",
         //Geschwindigkeit
-        "Da die meisten Cloud Computing-Dienste bedarfsgesteuert und als Self-Service-Angebote bereitgestellt werden,"
-            " lassen sich selbst äußerst große Mengen an Computingressourcen innerhalb weniger Minuten bereitstellen."
-            " Diese Bereitstellung erfolgt üblicherweise mit nur wenigen Mausklicks, sodass Unternehmen von großer Flexibilität "
-            "profitieren und der mit der Kapazitätsplanung einhergehende Druck der Vergangenheit angehört.",
+        "Dadurch, dass man die besten Server hat, die auch immer auf den aktuellsten Stand gebracht werden hat man sehr schnellen Zugriff auch auf riesige Mengen an Daten und Rechenleistung in sehr kurzer Zeit. "
+            "\n\nAußerdem sind die meißten Cloud Dienste sehr benutzerfreundlich, weshalb diese Resourcen oft nur mit wenigen Mausklicks abrufbar sind, was die Unternehemen viel flexibler und "
+            "Kapazitätsplanung überflüssig macht. Kapazitätsplanung? Das ist ein aufwendige entwickelter Plan zu optimalen Nutzung von Resourcen zu möglichst wenig Geld.",
         //Globale Skalierung
         "Zu den Vorteilen von Cloud Computing-Diensten zählt u. a. die Möglichkeit einer elastischen Skalierung. "
             "Im Cloudkontext bedeutet das, die richtige Menge an IT-Ressourcen (beispielsweise eine höhere oder "
             "niedrigere Rechenleistung, Speicherkapazität oder Bandbreite) genau dann bereitzustellen, wenn sie "
-            "benötigt wird – und zwar vom richtigen geografischen Standort aus.",
+            "benötigt wird – und zwar vom richtigen geografischen Standort aus. Das ist wichtig, weil dadurch höhere Datenübertragungsraten und eine niedrigere Latenz, also Verzögerung, erreicht wird.",
         //Produktivität
         "Lokale Rechenzentren gehen typischerweise mit einem erheblichen Einrichtungs- und Verwaltungsaufwand einher. "
-            "Dazu zählen z.B. die Einrichtung von Hardware, das Aufspielen von Softwarepatches und andere zeitaufwändige "
-            "IT-Verwaltungsaufgaben. Beim Cloud Computing müssen viele dieser Aufgaben nicht länger ausgeführt werden, "
+            "Dazu zählen z.B. die Einrichtung der Hardware, also der Server, das Aufspielen von Softwareupdates und andere zeitaufwändige "
+            "IT-Verwaltungsaufgaben. Beim Cloud Computing müssen viele dieser Aufgaben nicht länger mehr von den Firmen selbst, sondern von dem Cloud Anbieter erledigt werden,  "
             "sodass sich IT-Teams auf wichtigere Unternehmensziele konzentrieren können.",
         //Leistung
         "Die größten Cloud Computing-Dienste werden in einem globalen Netzwerk aus sicheren Datencentern ausgeführt,"
@@ -200,7 +200,7 @@ class MyAppState extends State<MyApp> {
     [
       ["Definition", "Namensherkunft"],
       [
-        ""
+        "",
         "Kosten",
         "Geschwindigkeit",
         "Globale Skalierung",
@@ -278,7 +278,7 @@ class MyAppState extends State<MyApp> {
   List img = [
     [
       ["", ""],
-      ["", "", "", "", "", "", "", ""],
+      ["assets/vorteileCC/fragezeichen.jpg", "assets/vorteileCC/coins.jpg", "assets/vorteileCC/speed.jpg", "assets/vorteileCC/scalierbar.jpg", "assets/vorteileCC/produktiv.jpg", "assets/vorteileCC/leistungen.jpg", "assets/vorteileCC/zuverl.jpg", "assets/vorteileCC/sicherheit.jpg"],
       ["", "", "", "", ""],
       ["", "", "", "", ""],
       ["", "", "", "", ""],
@@ -420,7 +420,7 @@ class MyAppState extends State<MyApp> {
     return Text(
       path,
       style: TextStyle(
-          fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black38),
+          fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black38),
     );
   }
 
@@ -641,8 +641,8 @@ class MyAppState extends State<MyApp> {
               backgroundColor: Colors.lightBlueAccent,
             ),
             body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                picture("assets/vorteileCC/fragezeichen.jpg"),
                 Quiz(qindex, qtotalScore, reset, antwort, entryIndex,
                     contentIndex),
                 FlatButton(onPressed: nm, child: Text("Lektion neu starten")),

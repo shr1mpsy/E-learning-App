@@ -140,7 +140,7 @@ class Quiz extends StatelessWidget {
                   entryIndex: entryIndex,
                   contentIndex: contentIndex
           )
-              : Result(totalScore, reset, _fragen[contentIndex][entryIndex].length));}
+              : Result(totalScore, reset, _fragen[contentIndex][entryIndex].length, _fragen[contentIndex][entryIndex]));}
     else{
       return Center(
         child: Text("Hier ist kein Quiz nötig. Du kannst gleich weiter machen!",
