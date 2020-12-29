@@ -32,6 +32,7 @@ class MyAppState extends State<MyApp> {
       for (int i = 0; i < entries[contentIndex].length; i++) {
         values[entries[contentIndex][i]] = i;
       }
+      _currentIndex = 1;
     });
     return values;
   }
@@ -42,7 +43,7 @@ class MyAppState extends State<MyApp> {
       // WAS IST CLOUD COMPUTING? DEFINITION
       [
         "Bei Cloud Computing werden deine Daten auf entfernten Severn und nicht lokal auf einem Rechner gespeichert. Eine Cloud ist also im Grunde 'nur' ein riesiges Netzwerk von Servern, "
-            "welche über die ganze Welt verteilt ist. Das Gespeicherte ist dann über das Internet von überall in Echtzeit abrufbar. \n\n"
+            "welche über die ganze Welt verteilt sind. Das Gespeicherte ist dann über das Internet von überall in Echtzeit abrufbar. \n\n"
             "Die Server und die Kapazitäten werden meißt vermietet, weil das Ganze nur dadurch Sinn macht und man nur so alle die Vorteile von Cloud Computing richtig ausnutzen kann."
             "Diese Art der Datenverwaltung birgt nämlich sehr viele Vorteile in sich, die wir aber später im Kurs noch alle kennenlernen werden.",
         "Aber warum heißt es dann Cloud? Hat das ein Sinn? \n\nNaja, eine Cloud heißt deswegen Cloud, weil die dahinterliegenden Strukturen und die Server auf welchen die Daten liegen für den Nutzer unsichtbar und kaum von Bedeutung sind. "
@@ -71,12 +72,12 @@ class MyAppState extends State<MyApp> {
         "Lokale Rechenzentren gehen typischerweise mit einem erheblichen Einrichtungs- und Verwaltungsaufwand einher. "
             "Dazu zählen z.B. die Einrichtung der Hardware, also der Server, das Aufspielen von Softwareupdates und andere zeitaufwändige "
             "IT-Verwaltungsaufgaben. Beim Cloud Computing müssen viele dieser Aufgaben nicht länger mehr von den Firmen selbst, sondern von dem Cloud Anbieter erledigt werden,  "
-            "sodass sich IT-Teams auf wichtigere Unternehmensziele konzentrieren können.",
+            "sodass sich IT-Teams auf wichtigere Unternehmensziele konzentrieren können und damit die Produktivität der Firma steigern können.",
         //Leistung
-        "Die größten Cloud Computing-Dienste werden in einem globalen Netzwerk aus sicheren Datencentern ausgeführt,"
-            " die regelmäßig auf die neueste Generation schneller und effizienter Computinghardware aktualisiert werden. "
+        "Die größten Cloud Computing-Dienste werden in einem globalen Netzwerk aus sicheren Datencentern ausgeführt, "
+            "die regelmäßig auf die neueste Generation schneller und effizienter Computinghardware aktualisiert werden. "
             "Dieser Aufbau bietet gegenüber einem einzelnen Unternehmensdatencenter eine Reihe von Vorteilen, wie z. B. "
-            "geringere Netzwerklatenzen für Anwendungen und größere Kostenersparnisse.",
+            "geringere Netzwerklatenzen, also die Verzögerung bei Kommunikation, Datenübertragung und Rechenleistung, für Anwendungen und größere Kostenersparnisse.",
         //Zuverlässigkeit
         "Mithilfe von Cloud Computing werden Datensicherung, Notfallwiederherstellung und Geschäftskontinuität vereinfacht und die zugehörigen "
             "Kosten gesenkt, da Daten an mehreren redundanten Standorten im Netzwerk des Cloudanbieters gespiegelt werden können.",
@@ -315,6 +316,14 @@ class MyAppState extends State<MyApp> {
     });
   }
 
+  void resetCourse(){
+    setState(() {
+      for(int item = 0; item<trailings[contentIndex].length; item++){
+        trailings[contentIndex][item] = false;
+      }
+    });
+  }
+
   void antwort(int score) {
     setState(() {
       qtotalScore += score;
@@ -461,9 +470,34 @@ class MyAppState extends State<MyApp> {
     }
   }
 
+  int _currentIndex = 0;
+  Widget boNaBa(text){
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      type: BottomNavigationBarType.fixed,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.school_sharp),
+          label: "Alle Kurse",
+          backgroundColor: Colors.blue,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: "Home",
+          backgroundColor: Colors.blue,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.book_outlined),
+          label: "Glossar",
+          backgroundColor: Colors.blue,
+        ),
+      ]
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (isContent) {
+    if(_currentIndex == 0) {
       return MaterialApp(
         home: Scaffold(
           backgroundColor: Colors.white,
@@ -477,115 +511,23 @@ class MyAppState extends State<MyApp> {
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                     child: ListTile(
-                  onTap: () {
-                    key = contentEntries[index];
-                    fromCoursesToContentOverview(); //
-                  },
-                  tileColor: Colors.white,
-                  title: Text('${contentEntries[index]}'),
-                  leading: Image.asset(coursePictures[index]),
-                  trailing: switchTrailingsCourses(contentTrailings[index]),
-                ));
+                      onTap: () {
+                        key = contentEntries[index];
+                        fromCoursesToContentOverview(); //
+                      },
+                      tileColor: Colors.white,
+                      title: Text('${contentEntries[index]}'),
+                      leading: Image.asset(coursePictures[index]),
+                      trailing: switchTrailingsCourses(
+                          contentTrailings[index]),
+                    ));
               }),
+          bottomNavigationBar: boNaBa("Alle Kurse"),
         ),
       );
     }
-    else if (isIntro) {
-      return MaterialApp(
-        home: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            title: Text(contentEntries[contentIndex]),
-            backgroundColor: Colors.lightBlueAccent,
-          ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Center(
-                child: Image.asset(
-                  coursePictures[contentIndex],
-                  height: 310,
-                  width: 300,
-                ),
-              ),
-              Text(
-                contentEntries[contentIndex],
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
-              )
-            ],
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: start,
-            child: Icon(Icons.keyboard_arrow_down),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-        ),
-      );
-    }
-    else if (allDone & notAlreadyDone) {
-      return MaterialApp(
-        home: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            title: Text(contentEntries[contentIndex]),
-            backgroundColor: Colors.lightBlueAccent,
-          ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Center(
-                child: Text(
-                  "Du hast es geschafft",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 90.0, 0.0, 0.0),
-                child: Image.network(
-                    "https://media.giphy.com/media/Wvh1de6cFXcWc/giphy.gif"),
-              )
-            ],
-          ),
-          floatingActionButton: FloatingActionButton(
-              onPressed: toDoneOverview,
-              child: Icon(Icons.keyboard_arrow_down_outlined)),
-        ),
-      );
-    }
-    else if (isOverview) {
-      return MaterialApp(
-        home: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            title: Text(contentEntries[contentIndex]),
-            backgroundColor: Colors.lightBlueAccent,
-            actions: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.keyboard_arrow_down), onPressed: toCourses)
-            ],
-          ),
-          body: ListView.builder(
-              padding: const EdgeInsets.all(18),
-              itemCount: entries[contentIndex].length,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                    child: ListTile(
-                  onTap: () {
-                    key = entries[contentIndex][index];
-                    toContent();
-                  },
-                  tileColor: Colors.white,
-                  title: Text('${entries[contentIndex][index]}'),
-                  leading: Image.asset(assets[contentIndex][index]),
-                  trailing: switchTrailing(trailings[contentIndex][index]),
-                ));
-              }),
-        ),
-      );
-    }
-    else if (!isOverview) {
-      if (index < text[contentIndex][entryIndex].length) {
+    else if(_currentIndex==1) {
+      if (isIntro) {
         return MaterialApp(
           home: Scaffold(
             backgroundColor: Colors.white,
@@ -594,45 +536,32 @@ class MyAppState extends State<MyApp> {
               backgroundColor: Colors.lightBlueAccent,
             ),
             body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(
-                    color: Colors.amber[20],
-                    margin: EdgeInsets.all(19.0),
-                    child: Column(
-                      children: <Widget>[
-                        picture(img[contentIndex][entryIndex][index]),
-                        headline(headlines[contentIndex][entryIndex][index]),
-                        myText(text[contentIndex][entryIndex][index]),
-                      ],
-                    )),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FlatButton(
-                        onPressed: antwortbw,
-                        child: Text(
-                          "Zurück",
-                          style: TextStyle(
-                              fontSize: 12, color: Colors.lightBlueAccent),
-                        )),
-                    FlatButton(
-                        onPressed: toOverview,
-                        child: Text(
-                          "Zur Übersicht",
-                          style: TextStyle(
-                              fontSize: 12, color: Colors.lightBlueAccent),
-                        ))
-                  ],
+                Center(
+                  child: Image.asset(
+                    coursePictures[contentIndex],
+                    height: 310,
+                    width: 300,
+                  ),
+                ),
+                Text(
+                  contentEntries[contentIndex],
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
                 )
               ],
             ),
             floatingActionButton: FloatingActionButton(
-                onPressed: antwortfw,
-                child: Icon(Icons.arrow_forward_ios_outlined)),
+              onPressed: start,
+              child: Icon(Icons.keyboard_arrow_down),
+              tooltip: "Los gehts!",
+            ),
+            floatingActionButtonLocation:
+            FloatingActionButtonLocation.centerDocked,
           ),
         );
       }
-      else {
+      else if (allDone & notAlreadyDone) {
         return MaterialApp(
           home: Scaffold(
             backgroundColor: Colors.white,
@@ -641,18 +570,145 @@ class MyAppState extends State<MyApp> {
               backgroundColor: Colors.lightBlueAccent,
             ),
             body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                picture("assets/vorteileCC/fragezeichen.jpg"),
-                Quiz(qindex, qtotalScore, reset, antwort, entryIndex,
-                    contentIndex),
-                FlatButton(onPressed: nm, child: Text("Lektion neu starten")),
-                RaisedButton(
-                    onPressed: toOverviewSwitcher, child: Text("Zur Übersicht"))
+                Center(
+                  child: Text(
+                    "Du hast es geschafft",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 90.0, 0.0, 0.0),
+                  child: Image.network(
+                      "https://media.giphy.com/media/Wvh1de6cFXcWc/giphy.gif"),
+                )
               ],
             ),
+            floatingActionButton: FloatingActionButton(
+                onPressed: toDoneOverview,
+                child: Icon(Icons.keyboard_arrow_down_outlined)),
+            bottomNavigationBar: boNaBa("Lernen"),
           ),
         );
       }
+      else if (isOverview) {
+        return MaterialApp(
+          home: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              title: Text(contentEntries[contentIndex]),
+              backgroundColor: Colors.lightBlueAccent,
+              actions: <Widget>[
+                IconButton(icon: Icon(Icons.keyboard_arrow_down),
+                  onPressed: toCourses,
+                  tooltip: "Zu den Kursen",),
+                IconButton(icon: Icon(Icons.autorenew),
+                  onPressed: resetCourse,
+                  tooltip: "Kurs zurücksetzen",),
+              ],
+            ),
+            body: ListView.builder(
+                padding: const EdgeInsets.all(18),
+                itemCount: entries[contentIndex].length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                      child: ListTile(
+                        onTap: () {
+                          key = entries[contentIndex][index];
+                          toContent();
+                        },
+                        tileColor: Colors.white,
+                        title: Text('${entries[contentIndex][index]}'),
+                        leading: Image.asset(assets[contentIndex][index]),
+                        trailing: switchTrailing(trailings[contentIndex][index]),
+                      ));
+                }),
+            bottomNavigationBar: boNaBa("Lernen"),
+          ),
+        );
+      }
+      else if (!isOverview) {
+        if (index < text[contentIndex][entryIndex].length) {
+          return MaterialApp(
+            home: Scaffold(
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                title: Text(contentEntries[contentIndex]),
+                backgroundColor: Colors.lightBlueAccent,
+              ),
+              body: Column(
+                children: <Widget>[
+                  Container(
+                      color: Colors.amber[20],
+                      margin: EdgeInsets.all(19.0),
+                      child: Column(
+                        children: <Widget>[
+                          picture(img[contentIndex][entryIndex][index]),
+                          headline(headlines[contentIndex][entryIndex][index]),
+                          myText(text[contentIndex][entryIndex][index]),
+                        ],
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FlatButton(
+                          onPressed: antwortbw,
+                          child: Text(
+                            "Zurück",
+                            style: TextStyle(
+                                fontSize: 12, color: Colors.lightBlueAccent),
+                          )),
+                      FlatButton(
+                          onPressed: toOverview,
+                          child: Text(
+                            "Zur Übersicht",
+                            style: TextStyle(
+                                fontSize: 12, color: Colors.lightBlueAccent),
+                          ))
+                    ],
+                  )
+                ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                  onPressed: antwortfw,
+                  child: Icon(Icons.arrow_forward_ios_outlined)),
+
+              bottomNavigationBar: boNaBa("Lernen"),
+            ),
+          );
+        }
+        else {
+          return MaterialApp(
+            home: Scaffold(
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                title: Text(contentEntries[contentIndex]),
+                backgroundColor: Colors.lightBlueAccent,
+              ),
+              body: Column(
+                children: <Widget>[
+                  picture("assets/vorteileCC/fragezeichen.jpg"),
+                  Quiz(qindex, qtotalScore, reset, antwort, entryIndex,
+                      contentIndex),
+                  FlatButton(onPressed: nm, child: Text("Lektion neu starten")),
+                  RaisedButton(
+                      onPressed: toOverviewSwitcher, child: Text("Zur Übersicht"))
+                ],
+              ),
+              bottomNavigationBar: boNaBa("Lernen"),
+            ),
+          );
+        }
+      }
+    }
+    else if(_currentIndex==2){
+      return MaterialApp(
+        home: Scaffold(
+          body: Text("Kommt noch"),
+            bottomNavigationBar: boNaBa("Glossar"),
+        )
+      );
     }
   }
 }
