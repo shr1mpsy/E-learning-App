@@ -308,6 +308,7 @@ class MyAppState extends State<MyApp> {
   int qtotalScore = 0;
   int index = 0;
   int entryIndex = 0;
+  int _currentIndex = 0;
 
   void reset() {
     setState(() {
@@ -407,6 +408,7 @@ class MyAppState extends State<MyApp> {
     setState(() {
       isContent = true;
       isIntro = false;
+      _currentIndex = 0;
     });
   }
 
@@ -470,42 +472,102 @@ class MyAppState extends State<MyApp> {
     }
   }
 
-  int _currentIndex = 0;
-  Widget boNaBa(text){
-    return BottomNavigationBar(
-      currentIndex: _currentIndex,
-      type: BottomNavigationBarType.fixed,
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.school_sharp),
-          label: "Alle Kurse",
-          backgroundColor: Colors.blue,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: "Home",
-          backgroundColor: Colors.blue,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.book_outlined),
-          label: "Glossar",
-          backgroundColor: Colors.blue,
-        ),
-      ]
-    );
+  Widget interfaceFAB(_currentIndex){
+    if(_currentIndex == 0){
+      return null;
+    }
+    if(_currentIndex==1){
+      if(isIntro){
+        return FloatingActionButton(
+          onPressed: start,
+          child: Icon(Icons.keyboard_arrow_down),
+          tooltip: "Los gehts!",
+        );
+      }
+      else if(allDone & notAlreadyDone){
+        return FloatingActionButton(
+            onPressed: toDoneOverview,
+            child: Icon(Icons.keyboard_arrow_down_outlined));
+      }
+      else if(isOverview){
+        return null;
+      }
+      else if(!isOverview){
+        if (index < text[contentIndex][entryIndex].length){
+          return FloatingActionButton(
+              onPressed: antwortfw,
+              child: Icon(Icons.arrow_forward_ios_outlined));
+        }
+        else{
+          return null;
+        }
+      }
+    }
+    else if(_currentIndex==2){
+      return null;
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if(_currentIndex == 0) {
-      return MaterialApp(
-        home: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            title: Text("Kurse"),
+  Widget interfaceAppBar(_currentIndex){
+    if(_currentIndex==0){
+      return AppBar(
+        title: Text("Kurse"),
+        backgroundColor: Colors.lightBlueAccent,
+      );
+    }
+    else if(_currentIndex==1){
+      if(isIntro){
+        return AppBar(
+          title: Text(contentEntries[contentIndex]),
+          backgroundColor: Colors.lightBlueAccent,
+        );
+      }
+      else if (allDone & notAlreadyDone){
+        return AppBar(
+          title: Text(contentEntries[contentIndex]),
+          backgroundColor: Colors.lightBlueAccent,
+        );
+      }
+      else if(isOverview){
+        return AppBar(
+          title: Text(contentEntries[contentIndex]),
+          backgroundColor: Colors.lightBlueAccent,
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.keyboard_arrow_down),
+              onPressed: toCourses,
+              tooltip: "Zu den Kursen",),
+            IconButton(icon: Icon(Icons.autorenew),
+              onPressed: resetCourse,
+              tooltip: "Kurs zurücksetzen",),
+          ],
+        );
+      }
+      else if(!isOverview){
+        if (index < text[contentIndex][entryIndex].length){
+          return AppBar(
+            title: Text(contentEntries[contentIndex]),
             backgroundColor: Colors.lightBlueAccent,
-          ),
-          body: ListView.builder(
+          );
+        }
+        else{
+          return AppBar(
+            title: Text(contentEntries[contentIndex]),
+            backgroundColor: Colors.lightBlueAccent,
+          );
+        }
+      }
+    }
+    else if(_currentIndex==2){
+      return AppBar(
+        title: Text("Glossar"),
+        backgroundColor: Colors.lightBlueAccent,
+      );
+    }
+  }
+
+  Widget interfaceBody(_currentIndex){
+    if(_currentIndex == 0) {
+      return ListView.builder(
               padding: const EdgeInsets.all(18),
               itemCount: contentEntries.length,
               itemBuilder: (BuildContext context, int index) {
@@ -521,21 +583,12 @@ class MyAppState extends State<MyApp> {
                       trailing: switchTrailingsCourses(
                           contentTrailings[index]),
                     ));
-              }),
-          bottomNavigationBar: boNaBa("Alle Kurse"),
-        ),
-      );
-    }
+              },
+            );
+        }
     else if(_currentIndex==1) {
       if (isIntro) {
-        return MaterialApp(
-          home: Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              title: Text(contentEntries[contentIndex]),
-              backgroundColor: Colors.lightBlueAccent,
-            ),
-            body: Column(
+        return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Center(
@@ -550,26 +603,12 @@ class MyAppState extends State<MyApp> {
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
                 )
               ],
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: start,
-              child: Icon(Icons.keyboard_arrow_down),
-              tooltip: "Los gehts!",
-            ),
-            floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerDocked,
-          ),
-        );
+            );
+            //floatingActionButtonLocation:
+            //FloatingActionButtonLocation.centerDocked,
       }
       else if (allDone & notAlreadyDone) {
-        return MaterialApp(
-          home: Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              title: Text(contentEntries[contentIndex]),
-              backgroundColor: Colors.lightBlueAccent,
-            ),
-            body: Column(
+        return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Center(
@@ -584,31 +623,11 @@ class MyAppState extends State<MyApp> {
                       "https://media.giphy.com/media/Wvh1de6cFXcWc/giphy.gif"),
                 )
               ],
-            ),
-            floatingActionButton: FloatingActionButton(
-                onPressed: toDoneOverview,
-                child: Icon(Icons.keyboard_arrow_down_outlined)),
-            bottomNavigationBar: boNaBa("Lernen"),
-          ),
-        );
+            );
+            //bottomNavigationBar: boNaBa("Lernen"),
       }
       else if (isOverview) {
-        return MaterialApp(
-          home: Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              title: Text(contentEntries[contentIndex]),
-              backgroundColor: Colors.lightBlueAccent,
-              actions: <Widget>[
-                IconButton(icon: Icon(Icons.keyboard_arrow_down),
-                  onPressed: toCourses,
-                  tooltip: "Zu den Kursen",),
-                IconButton(icon: Icon(Icons.autorenew),
-                  onPressed: resetCourse,
-                  tooltip: "Kurs zurücksetzen",),
-              ],
-            ),
-            body: ListView.builder(
+        return ListView.builder(
                 padding: const EdgeInsets.all(18),
                 itemCount: entries[contentIndex].length,
                 itemBuilder: (BuildContext context, int index) {
@@ -623,21 +642,12 @@ class MyAppState extends State<MyApp> {
                         leading: Image.asset(assets[contentIndex][index]),
                         trailing: switchTrailing(trailings[contentIndex][index]),
                       ));
-                }),
-            bottomNavigationBar: boNaBa("Lernen"),
-          ),
-        );
+                });
+            //bottomNavigationBar: boNaBa("Lernen"),
       }
       else if (!isOverview) {
         if (index < text[contentIndex][entryIndex].length) {
-          return MaterialApp(
-            home: Scaffold(
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                title: Text(contentEntries[contentIndex]),
-                backgroundColor: Colors.lightBlueAccent,
-              ),
-              body: Column(
+          return Column(
                 children: <Widget>[
                   Container(
                       color: Colors.amber[20],
@@ -669,24 +679,11 @@ class MyAppState extends State<MyApp> {
                     ],
                   )
                 ],
-              ),
-              floatingActionButton: FloatingActionButton(
-                  onPressed: antwortfw,
-                  child: Icon(Icons.arrow_forward_ios_outlined)),
-
-              bottomNavigationBar: boNaBa("Lernen"),
-            ),
-          );
+              );
+          //bottomNavigationBar: boNaBa("Lernen"),
         }
         else {
-          return MaterialApp(
-            home: Scaffold(
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                title: Text(contentEntries[contentIndex]),
-                backgroundColor: Colors.lightBlueAccent,
-              ),
-              body: Column(
+          return Column(
                 children: <Widget>[
                   picture("assets/vorteileCC/fragezeichen.jpg"),
                   Quiz(qindex, qtotalScore, reset, antwort, entryIndex,
@@ -695,20 +692,60 @@ class MyAppState extends State<MyApp> {
                   RaisedButton(
                       onPressed: toOverviewSwitcher, child: Text("Zur Übersicht"))
                 ],
-              ),
-              bottomNavigationBar: boNaBa("Lernen"),
-            ),
-          );
+              );
+             // bottomNavigationBar: boNaBa("Lernen"),
         }
       }
     }
     else if(_currentIndex==2){
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+      Center(child: Text("Diese Funktion ist noch nicht verfügbar"))
+        ]
+      );    //bottomNavigationBar: boNaBa("Glossar"),
+    }
+  }
+
+  Widget boNaBa(){
+      return BottomNavigationBar(
+          currentIndex: _currentIndex,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school_sharp),
+              label: "Alle Kurse",
+              backgroundColor: Colors.blue,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Home",
+              backgroundColor: Colors.blue,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book_outlined),
+              label: "Glossar",
+              backgroundColor: Colors.blue,
+            ),
+          ],
+        onTap: (indexBoNaBa){
+            setState(() {
+              _currentIndex = indexBoNaBa;
+            });
+        },
+      );
+  }
+
+  @override
+  Widget build(BuildContext context) {
       return MaterialApp(
         home: Scaffold(
-          body: Text("Kommt noch"),
-            bottomNavigationBar: boNaBa("Glossar"),
-        )
+          backgroundColor: Colors.white,
+          appBar: interfaceAppBar(_currentIndex),
+          body: interfaceBody(_currentIndex),
+          floatingActionButton: interfaceFAB(_currentIndex),
+          bottomNavigationBar: boNaBa(),
+        ),
       );
-    }
   }
 }
