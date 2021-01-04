@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './Quiz.dart';
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -12,6 +11,23 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  MyAppState(){
+    for(int cindex = 0; cindex < contentEntries.length; cindex++){
+      List tmp = [];
+      for(int eindex = 0; eindex < entries[cindex].length; eindex++){
+        tmp.add(entries[cindex][eindex]);
+      }
+
+      List tmp2 = [];
+      for(int imgItem = 0; imgItem < assets[cindex].length; imgItem++){
+        tmp2.add(assets[cindex][imgItem]);
+      }
+
+      itemList.add(
+          Items(contentEntries[cindex], tmp, tmp2)
+      );
+    }
+  }
   //Content
   List contentEntries = ["Cloud Computing", "Hacking", "AD"];
   List coursePictures = [
@@ -239,8 +255,7 @@ class MyAppState extends State<MyApp> {
       ]
     ],
     [],
-    []
-  ];
+    []];
 
   //global
   final List entries = [
@@ -289,6 +304,10 @@ class MyAppState extends State<MyApp> {
     [],
     []
   ];
+
+  //Liste für Inhaltsverzeichniss
+  final List itemList = [];
+
 
 // Booleans
   bool isOverview = true;
@@ -412,6 +431,36 @@ class MyAppState extends State<MyApp> {
     });
   }
 
+  void fromContentTableToContent(ci, ei){
+    setState(() {
+      isOverview = false;
+      _currentIndex = 1;
+      contentIndex = ci;//ci;
+      entryIndex = ei;//ei;
+      index = 0;
+    });
+  }
+
+  _buildExpandableContent(Items item, expIndex){
+    List<Widget> columnContent = [];
+    int asdf = 0;
+    int i = 0;
+    for (String content in item.contents){
+      columnContent.add(
+        ListTile(
+          title: Text(content, style: new TextStyle(fontSize: 15.0),),
+          leading: CircleAvatar(child: Image.asset(item.leading[i])),
+          onTap: () {
+            asdf = values[content];
+            fromContentTableToContent(expIndex, asdf);
+          },
+        ),
+      );
+      i++;
+    }
+    return columnContent;
+  }
+
   //WIDGETS
 
   Widget picture(path) {
@@ -517,6 +566,9 @@ class MyAppState extends State<MyApp> {
     }
     else if(_currentIndex==1){
       if(isIntro){
+        isOverview = true;
+        entryIndex = 0;
+        index = 0;
         return AppBar(
           title: Text(contentEntries[contentIndex]),
           backgroundColor: Colors.lightBlueAccent,
@@ -559,7 +611,7 @@ class MyAppState extends State<MyApp> {
     }
     else if(_currentIndex==2){
       return AppBar(
-        title: Text("Glossar"),
+        title: Text("Inhaltsverzeichnis"),
         backgroundColor: Colors.lightBlueAccent,
       );
     }
@@ -588,6 +640,9 @@ class MyAppState extends State<MyApp> {
         }
     else if(_currentIndex==1) {
       if (isIntro) {
+        isOverview = true;
+        entryIndex =0;
+        index = 0;
         return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -698,12 +753,23 @@ class MyAppState extends State<MyApp> {
       }
     }
     else if(_currentIndex==2){
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-      Center(child: Text("Diese Funktion ist noch nicht verfügbar"))
-        ]
-      );    //bottomNavigationBar: boNaBa("Glossar"),
+      return ListView.builder(
+        itemCount: itemList.length,
+        itemBuilder: (context, expandableIndex){
+          return Container(
+            //color: Colors.blue,
+            child:ExpansionTile(
+            title: Text(itemList[expandableIndex].title, style: TextStyle(fontSize: 18),),
+            leading: Image.asset(coursePictures[expandableIndex]),
+            children: <Widget>[
+              new Column(
+                children: _buildExpandableContent(itemList[expandableIndex], expandableIndex),
+              ),
+            ],
+          )
+          );
+        },
+      );
     }
   }
 
@@ -724,7 +790,7 @@ class MyAppState extends State<MyApp> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.book_outlined),
-              label: "Glossar",
+              label: "Inhaltsverzeichnis",
               backgroundColor: Colors.blue,
             ),
           ],
@@ -748,4 +814,12 @@ class MyAppState extends State<MyApp> {
         ),
       );
   }
+}
+
+class Items{
+  final String title;
+  List contents = [];
+  final List leading;
+
+  Items(this.title, this.contents, this.leading);
 }
