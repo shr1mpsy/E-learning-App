@@ -304,7 +304,7 @@ class MyAppState extends State<MyApp> {
 
   //Liste für Inhaltsverzeichniss
   final List itemList = [];
-  List asdf = [false, false,false];
+  List isfav = [false, false,false];
   List favourites = [];
 
 
@@ -441,13 +441,22 @@ class MyAppState extends State<MyApp> {
     });
   }
 
-   void tip(){
+  void tip(){
      setState(() {
        _currentIndex=0;
        isContent = true;
        isIntro = false;
      });
    }
+
+  void deleteCourse(ind){
+    setState(() {
+      int tmp = favourites[ind];
+      favourites.remove(favourites[ind]);
+      isfav[tmp] = false;
+      print(isfav);
+    });
+  }
 
   _buildExpandableContent(Items item, expIndex){
     List<Widget> columnContent = [];
@@ -533,8 +542,8 @@ class MyAppState extends State<MyApp> {
   Widget switchTrailingsCourses(a, b) {
     return IconButton(icon: favIcon(a), onPressed: (){
         setState(() {
-        asdf[b] = !asdf[b];
-        if(asdf[b]){
+        isfav[b] = !isfav[b];
+        if(isfav[b]){
           favourites.add(b);
           favourites.sort();
           print(favourites);
@@ -612,7 +621,7 @@ class MyAppState extends State<MyApp> {
     else if(_currentIndex==1){
       if(isContent){
         return AppBar(
-          title: Text("Favoriten"),
+          title: Text("Meine Kurse"),
           backgroundColor: Colors.lightBlueAccent,
         );
       }
@@ -680,7 +689,7 @@ class MyAppState extends State<MyApp> {
                       onTap: () {
                         key = contentEntries[index];
                         contentIndex = contentValues[key];
-                        //fromCoursesToContentOverview();
+                        fromCoursesToContentOverview();
                         setState(() {
                           description = true;
                         });
@@ -688,7 +697,7 @@ class MyAppState extends State<MyApp> {
                       tileColor: Colors.white,
                       title: Text('${contentEntries[index]}'),
                       leading: Image.asset(coursePictures[index]),
-                      trailing: switchTrailingsCourses(asdf[index], index)
+                      trailing: switchTrailingsCourses(isfav[index], index)
                   ));
             },
           );
@@ -741,7 +750,7 @@ class MyAppState extends State<MyApp> {
                       tileColor: Colors.white,
                       title: Text('${contentEntries[favourites[favindex]]}'),
                       leading: Image.asset(coursePictures[favourites[favindex]]),
-                      trailing: switchTrailing(trailings[contentIndex][index]),//IconButton
+                      trailing: IconButton(icon: Icon(Icons.delete), onPressed: () {deleteCourse(favindex);},)//switchTrailing(trailings[contentIndex][favindex]),//IconButton
                     ));
               });
         }
@@ -905,7 +914,10 @@ class MyAppState extends State<MyApp> {
         onTap: (indexBoNaBa){
             setState(() {
               _currentIndex = indexBoNaBa;
-              isContent = true;
+              if(isOverview){
+                isContent = true;
+              }
+
             });
         },
       );

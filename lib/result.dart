@@ -63,6 +63,7 @@ class Result extends StatelessWidget {
           FlatButton(
               child: Text("Quiz neustarten", style: TextStyle(fontSize: 15)),
               onPressed: resultHandler),
+         //FlatButton(onPressed: null, child: Text("Nächste Lektion"))
         ],
       ),
     );
