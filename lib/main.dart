@@ -433,7 +433,9 @@ class MyAppState extends State<MyApp> {
 
   void fromContentTableToContent(ci, ei){
     setState(() {
+      isContent = false;
       isOverview = false;
+      isIntro = false;
       _currentIndex = 1;
       contentIndex = ci;//ci;
       entryIndex = ei;//ei;
@@ -689,7 +691,6 @@ class MyAppState extends State<MyApp> {
                       onTap: () {
                         key = contentEntries[index];
                         contentIndex = contentValues[key];
-                        fromCoursesToContentOverview();
                         setState(() {
                           description = true;
                         });
@@ -819,39 +820,41 @@ class MyAppState extends State<MyApp> {
       }
       else if (!isOverview) {
         if (index < text[contentIndex][entryIndex].length) {
-          return Column(
-                children: <Widget>[
-                  Container(
-                      color: Colors.amber[20],
-                      margin: EdgeInsets.all(19.0),
-                      child: Column(
-                        children: <Widget>[
-                          picture(img[contentIndex][entryIndex][index]),
-                          headline(headlines[contentIndex][entryIndex][index]),
-                          myText(text[contentIndex][entryIndex][index]),
-                        ],
-                      )),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FlatButton(
-                          onPressed: antwortbw,
-                          child: Text(
-                            "Zurück",
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.lightBlueAccent),
-                          )),
-                      FlatButton(
-                          onPressed: toOverview,
-                          child: Text(
-                            "Zur Übersicht",
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.lightBlueAccent),
-                          ))
-                    ],
-                  )
-                ],
-              );
+          return SingleChildScrollView(
+            child: Column(
+                  children: <Widget>[
+                    Container(
+                        color: Colors.amber[20],
+                        margin: EdgeInsets.all(19.0),
+                        child: Column(
+                          children: <Widget>[
+                            picture(img[contentIndex][entryIndex][index]),
+                            headline(headlines[contentIndex][entryIndex][index]),
+                            myText(text[contentIndex][entryIndex][index]),
+                          ],
+                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FlatButton(
+                            onPressed: antwortbw,
+                            child: Text(
+                              "Zurück",
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.lightBlueAccent),
+                            )),
+                        FlatButton(
+                            onPressed: toOverview,
+                            child: Text(
+                              "Zur Übersicht",
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.lightBlueAccent),
+                            ))
+                      ],
+                    )
+                  ],
+                ),
+          );
           //bottomNavigationBar: boNaBa("Lernen"),
         }
         else {
