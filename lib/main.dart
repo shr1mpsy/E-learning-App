@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './Quiz.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -10,8 +12,48 @@ class MyApp extends StatefulWidget {
   }
 }
 
+
+Future<List<String>> getIsFav() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  List<String> getIsFav = await preferences.getStringList("isFav") ?? ["false","false","false"];
+  return getIsFav;
+}
+
+setIsFav(index, change) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  List<String> newIsFav = await getIsFav();
+  newIsFav[index] = change;
+  await preferences.setStringList("isFav", newIsFav);
+}
+
+Future<List<String>> getFav() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  List<String> getFav = await preferences.getStringList("Fav") ?? [];
+  return getFav;
+}
+
+setFav(action, sortedList, ind) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  List<String> newFav = await getFav();
+  if(action){
+    newFav = sortedList;
+  }
+  else{
+    newFav.remove(newFav[ind]);
+  }
+
+  await preferences.setStringList("Fav", newFav);
+}
+
+
 class MyAppState extends State<MyApp> {
   MyAppState(){
+    getFav().then((var values){
+      favourites = values;
+    }).whenComplete(() => print(favourites));
+    getIsFav().then((var value){
+      isFav = value;
+    });
     for(int cindex = 0; cindex < contentEntries.length; cindex++){
       List tmp = [];
       for(int eindex = 0; eindex < entries[cindex].length; eindex++){
@@ -28,6 +70,7 @@ class MyAppState extends State<MyApp> {
       );
     }
   }
+
   //Content
   List contentEntries = ["Cloud Computing", "Hacking", "AD"];
   List coursePictures = [
@@ -38,7 +81,6 @@ class MyAppState extends State<MyApp> {
   Map contentValues = {"Cloud Computing": 0, "Hacking": 1, "AD": 2};
   int contentIndex = 0;
 
-  List contentTrailings = [false, false, false];
 
   Map fromCoursesToContentOverview() {
     setState(() {
@@ -304,7 +346,7 @@ class MyAppState extends State<MyApp> {
 
   //Liste für Inhaltsverzeichniss
   final List itemList = [];
-  List isfav = [false, false,false];
+  var isFav;
   List favourites = [];
 
 
@@ -317,6 +359,8 @@ class MyAppState extends State<MyApp> {
   bool isIntro = false;
   bool isContent = true;
   bool description = false;
+  bool startBuilding = false;
+  bool alreadyStarted = true;
 
 //Strings
   String quizAtOverview;
@@ -335,6 +379,7 @@ class MyAppState extends State<MyApp> {
       qtotalScore = 0;
     });
   }
+
 
   void resetCourse(){
     setState(() {
@@ -401,7 +446,7 @@ class MyAppState extends State<MyApp> {
           tmp.add(item);
           if (tmp.length == trailings[contentIndex].length) {
             allDone = true;
-            contentTrailings[contentIndex] = true;
+
           }
         }
       }
@@ -427,7 +472,7 @@ class MyAppState extends State<MyApp> {
     setState(() {
       isContent = true;
       isIntro = false;
-     // _currentIndex = 0;
+      // _currentIndex = 0;
     });
   }
 
@@ -444,19 +489,26 @@ class MyAppState extends State<MyApp> {
   }
 
   void tip(){
-     setState(() {
-       _currentIndex=0;
-       isContent = true;
-       isIntro = false;
-     });
-   }
+    setState(() {
+      _currentIndex=0;
+      isContent = true;
+      isIntro = false;
+    });
+  }
 
   void deleteCourse(ind){
     setState(() {
-      int tmp = favourites[ind];
+      int tmp = int.parse(favourites[ind]);
       favourites.remove(favourites[ind]);
-      isfav[tmp] = false;
-      print(isfav);
+      setFav(false, null, ind);
+      isFav[tmp] = "false";
+      setIsFav(tmp, "false");
+    });
+  }
+
+  void getStarted(){
+    setState(() {
+      alreadyStarted = false;
     });
   }
 
@@ -485,7 +537,7 @@ class MyAppState extends State<MyApp> {
       return Icon(Icons.favorite_border);
     }
     else{
-      return Icon(Icons.favorite);
+      return Icon(Icons.favorite, color: Colors.red,);
     }
   }
 
@@ -495,10 +547,10 @@ class MyAppState extends State<MyApp> {
     if (path != "") {
       return Center(
           child: Image.asset(
-        path,
-        width: double.infinity,
-        height: 100,
-      ));
+            path,
+            width: double.infinity,
+            height: 100,
+          ));
     } else {
       return Center();
     }
@@ -542,17 +594,32 @@ class MyAppState extends State<MyApp> {
   }
 
   Widget switchTrailingsCourses(a, b) {
-    return IconButton(icon: favIcon(a), onPressed: (){
-        setState(() {
-        isfav[b] = !isfav[b];
-        if(isfav[b]){
-          favourites.add(b);
-          favourites.sort();
-          print(favourites);
+    return IconButton(icon: favIcon(a == "true"), onPressed: (){
+      setState(() {
+        print(favourites);
+        String replaceVal = "false";
+        if(isFav[b]=="true"){
+          replaceVal = "false";
+          isFav[b] = replaceVal;
         }
         else{
-          favourites.remove(b);
+          replaceVal = "true";
+          isFav[b] = replaceVal;
+        }
+        setIsFav(b, replaceVal);
+        if(isFav[b] == "true"){
+          favourites.add("$b");
           print(favourites);
+          favourites.sort();
+          print(favourites);
+         // for(int i; i<favourites.length; i++){
+          //  favourites[i] = ""+ favourites[i];
+          //}
+          setFav(true, favourites, null);
+        }
+        else{
+          favourites.remove("$b");
+          setFav(false, null, b);
         }
       });
     });
@@ -681,43 +748,66 @@ class MyAppState extends State<MyApp> {
 
   Widget interfaceBody(_currentIndex){
     if(_currentIndex == 0) {
-        if(!description){
-          return ListView.builder(
-            padding: const EdgeInsets.all(18),
-            itemCount: contentEntries.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                  child: ListTile(
-                      onTap: () {
-                        key = contentEntries[index];
-                        contentIndex = contentValues[key];
-                        setState(() {
-                          description = true;
-                        });
-                      },
-                      tileColor: Colors.white,
-                      title: Text('${contentEntries[index]}'),
-                      leading: Image.asset(coursePictures[index]),
-                      trailing: switchTrailingsCourses(isfav[index], index)
-                  ));
-            },
-          );
-        }
-        else{
-          return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("${contentEntries[contentIndex]}"),
-                  Text("Hier kommt die Kursbeschreibung hin.")
-                ],
-              )
-          );
-        }
+      if(!description){
+        return ListView.builder(
+          padding: const EdgeInsets.all(18),
+          itemCount: contentEntries.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+                child: ListTile(
+                    onTap: () {
+                      key = contentEntries[index];
+                      contentIndex = contentValues[key];
+                      setState(() {
+                        description = true;
+                      });
+                    },
+                    tileColor: Colors.white,
+                    title: Text('${contentEntries[index]}'),
+                    leading: Image.asset(coursePictures[index]),
+                    trailing: switchTrailingsCourses(isFav[index], index)//isfav[index]toStringList()
+                ));
+          },
+        );
       }
+      else{
+        return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("${contentEntries[contentIndex]}"),
+                Text("Hier kommt die Kursbeschreibung hin.")
+              ],
+            )
+        );
+      }
+    }
     else if(_currentIndex==1) {
       if(isContent){
-        if(favourites.length == 0){
+        if(alreadyStarted){
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: Text(
+                  "Willkommen!",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
+                ),
+              ),
+              Text("\n"),
+              RaisedButton(
+                elevation: 10.0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                color: Colors.lightBlueAccent,
+                child: Text("Starten"),
+                textColor: Colors.white,
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+                onPressed: getStarted,
+              )
+            ],
+          );
+        }
+        else if(favourites.length == 0){
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -744,14 +834,14 @@ class MyAppState extends State<MyApp> {
               itemBuilder: (BuildContext context, int favindex) {
                 return Card(
                     child: ListTile(
-                      onTap: () {
-                        key = contentEntries[favourites[favindex]];
-                        fromCoursesToContentOverview();
-                      },
-                      tileColor: Colors.white,
-                      title: Text('${contentEntries[favourites[favindex]]}'),
-                      leading: Image.asset(coursePictures[favourites[favindex]]),
-                      trailing: IconButton(icon: Icon(Icons.delete), onPressed: () {deleteCourse(favindex);},)//switchTrailing(trailings[contentIndex][favindex]),//IconButton
+                        onTap: () {
+                          key = contentEntries[int.parse(favourites[favindex])];
+                          fromCoursesToContentOverview();
+                        },
+                        tileColor: Colors.white,
+                        title: Text("${contentEntries[int.parse(favourites[favindex])]}"),
+                        leading: Image.asset("${coursePictures[int.parse(favourites[favindex])]}"),
+                        trailing: IconButton(icon: Icon(Icons.delete), onPressed: () {deleteCourse(favindex);},)//IconButton
                     ));
               });
         }
@@ -762,113 +852,113 @@ class MyAppState extends State<MyApp> {
         entryIndex =0;
         index = 0;
         return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Center(
-                  child: Image.asset(
-                    coursePictures[contentIndex],
-                    height: 310,
-                    width: 300,
-                  ),
-                ),
-                Text(
-                  contentEntries[contentIndex],
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
-                )
-              ],
-            );
-            //floatingActionButtonLocation:
-            //FloatingActionButtonLocation.centerDocked,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+              child: Image.asset(
+                coursePictures[contentIndex],
+                height: 310,
+                width: 300,
+              ),
+            ),
+            Text(
+              contentEntries[contentIndex],
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
+            )
+          ],
+        );
+        //floatingActionButtonLocation:
+        //FloatingActionButtonLocation.centerDocked,
       }
       else if (allDone & notAlreadyDone) {
         return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Center(
-                  child: Text(
-                    "Du hast es geschafft",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 90.0, 0.0, 0.0),
-                  child: Image.network(
-                      "https://media.giphy.com/media/Wvh1de6cFXcWc/giphy.gif"),
-                )
-              ],
-            );
-            //bottomNavigationBar: boNaBa("Lernen"),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+              child: Text(
+                "Du hast es geschafft",
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 90.0, 0.0, 0.0),
+              child: Image.network(
+                  "https://media.giphy.com/media/Wvh1de6cFXcWc/giphy.gif"),
+            )
+          ],
+        );
+        //bottomNavigationBar: boNaBa("Lernen"),
       }
-      else if (isOverview) {
+      else if (isOverview && favourites != null) {
         return ListView.builder(
-                padding: const EdgeInsets.all(18),
-                itemCount: entries[contentIndex].length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                      child: ListTile(
-                        onTap: () {
-                          key = entries[contentIndex][index];
-                          toContent();
-                        },
-                        tileColor: Colors.white,
-                        title: Text('${entries[contentIndex][index]}'),
-                        leading: Image.asset(assets[contentIndex][index]),
-                        trailing: switchTrailing(trailings[contentIndex][index]),
-                      ));
-                });
-            //bottomNavigationBar: boNaBa("Lernen"),
+            padding: const EdgeInsets.all(18),
+            itemCount: entries[contentIndex].length,
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                  child: ListTile(
+                    onTap: () {
+                      key = entries[contentIndex][index];
+                      toContent();
+                    },
+                    tileColor: Colors.white,
+                    title: Text('${entries[contentIndex][index]}'),
+                    leading: Image.asset(assets[contentIndex][index]),
+                    trailing: switchTrailing(trailings[contentIndex][index]),
+                  ));
+            });
+        //bottomNavigationBar: boNaBa("Lernen"),
       }
       else if (!isOverview) {
         if (index < text[contentIndex][entryIndex].length) {
           return SingleChildScrollView(
             child: Column(
-                  children: <Widget>[
-                    Container(
-                        color: Colors.amber[20],
-                        margin: EdgeInsets.all(19.0),
-                        child: Column(
-                          children: <Widget>[
-                            picture(img[contentIndex][entryIndex][index]),
-                            headline(headlines[contentIndex][entryIndex][index]),
-                            myText(text[contentIndex][entryIndex][index]),
-                          ],
-                        )),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FlatButton(
-                            onPressed: antwortbw,
-                            child: Text(
-                              "Zurück",
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.lightBlueAccent),
-                            )),
-                        FlatButton(
-                            onPressed: toOverview,
-                            child: Text(
-                              "Zur Übersicht",
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.lightBlueAccent),
-                            ))
+              children: <Widget>[
+                Container(
+                    color: Colors.amber[20],
+                    margin: EdgeInsets.all(19.0),
+                    child: Column(
+                      children: <Widget>[
+                        picture(img[contentIndex][entryIndex][index]),
+                        headline(headlines[contentIndex][entryIndex][index]),
+                        myText(text[contentIndex][entryIndex][index]),
                       ],
-                    )
+                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FlatButton(
+                        onPressed: antwortbw,
+                        child: Text(
+                          "Zurück",
+                          style: TextStyle(
+                              fontSize: 12, color: Colors.lightBlueAccent),
+                        )),
+                    FlatButton(
+                        onPressed: toOverview,
+                        child: Text(
+                          "Zur Übersicht",
+                          style: TextStyle(
+                              fontSize: 12, color: Colors.lightBlueAccent),
+                        ))
                   ],
-                ),
+                )
+              ],
+            ),
           );
           //bottomNavigationBar: boNaBa("Lernen"),
         }
         else {
           return Column(
-                children: <Widget>[
-                  picture("assets/vorteileCC/fragezeichen.jpg"),
-                  Quiz(qindex, qtotalScore, reset, antwort, entryIndex,
-                      contentIndex),
-                  FlatButton(onPressed: nm, child: Text("Lektion neu starten")),
-                  RaisedButton(
-                      onPressed: toOverviewSwitcher, child: Text("Zur Übersicht"))
-                ],
-              );
-             // bottomNavigationBar: boNaBa("Lernen"),
+            children: <Widget>[
+              picture("assets/vorteileCC/fragezeichen.jpg"),
+              Quiz(qindex, qtotalScore, reset, antwort, entryIndex,
+                  contentIndex),
+              FlatButton(onPressed: nm, child: Text("Lektion neu starten")),
+              RaisedButton(
+                  onPressed: toOverviewSwitcher, child: Text("Zur Übersicht"))
+            ],
+          );
+          // bottomNavigationBar: boNaBa("Lernen"),
         }
       }
     }
@@ -878,15 +968,15 @@ class MyAppState extends State<MyApp> {
         itemBuilder: (context, expandableIndex){
           return Container(
             //color: Colors.blue,
-            child:ExpansionTile(
-            title: Text(itemList[expandableIndex].title, style: TextStyle(fontSize: 18),),
-            leading: Image.asset(coursePictures[expandableIndex]),
-            children: <Widget>[
-              new Column(
-                children: _buildExpandableContent(itemList[expandableIndex], expandableIndex),
-              ),
-            ],
-          )
+              child:ExpansionTile(
+                title: Text(itemList[expandableIndex].title, style: TextStyle(fontSize: 18),),
+                leading: Image.asset(coursePictures[expandableIndex]),
+                children: <Widget>[
+                  new Column(
+                    children: _buildExpandableContent(itemList[expandableIndex], expandableIndex),
+                  ),
+                ],
+              )
           );
         },
       );
@@ -894,40 +984,42 @@ class MyAppState extends State<MyApp> {
   }
 
   Widget boNaBa(){
-      return BottomNavigationBar(
-          currentIndex: _currentIndex,
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school_sharp),
-              label: "Alle Kurse",
-              backgroundColor: Colors.blue,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Home",
-              backgroundColor: Colors.blue,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book_outlined),
-              label: "Inhaltsverzeichnis",
-              backgroundColor: Colors.blue,
-            ),
-          ],
-        onTap: (indexBoNaBa){
-            setState(() {
-              _currentIndex = indexBoNaBa;
-              if(isOverview){
-                isContent = true;
-              }
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      type: BottomNavigationBarType.fixed,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.school_sharp),
+          label: "Alle Kurse",
+          backgroundColor: Colors.blue,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: "Home",
+          backgroundColor: Colors.blue,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.book_outlined),
+          label: "Inhaltsverzeichnis",
+          backgroundColor: Colors.blue,
+        ),
+      ],
+      onTap: (indexBoNaBa){
+        setState(() {
+          _currentIndex = indexBoNaBa;
+          if(isOverview){
+            isContent = true;
+          }
 
-            });
-        },
-      );
+        });
+      },
+    );
   }
 
   @override
+
   Widget build(BuildContext context) {
+
       return MaterialApp(
         home: Scaffold(
           backgroundColor: Colors.white,
@@ -937,7 +1029,7 @@ class MyAppState extends State<MyApp> {
           bottomNavigationBar: boNaBa(),
         ),
       );
-  }
+    }
 }
 
 class Items{
