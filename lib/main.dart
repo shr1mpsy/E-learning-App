@@ -45,15 +45,55 @@ setFav(action, sortedList, ind) async {
   await preferences.setStringList("Fav", newFav);
 }
 
+Future<List<String>> getTrailings(num) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  List<String> trailings1 = await preferences.getStringList("trailings1") ?? ["false", "false", "false", "false", "false", "false", "false"];
+  List<String> trailings2 = await preferences.getStringList("trailings2") ?? [];
+  List<String> trailings3 = await preferences.getStringList("trailings3") ?? [];
+  if(num ==0){
+    return trailings1;
+  }
+  if(num == 1){
+    return trailings2;
+  }
+  if(num == 2){
+    return trailings3;
+  }
+}
+
+setTrailings(num, ind, change) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  List<String> newTrailings = await getTrailings(num);
+  newTrailings[ind] = change;
+  if(num ==0){
+    await preferences.setStringList("trailings1", newTrailings);
+  }
+  if(num == 1){
+    await preferences.setStringList("trailings2", newTrailings);
+  }
+  if(num == 2){
+    await preferences.setStringList("trailings3", newTrailings);
+  }
+}
+
 
 class MyAppState extends State<MyApp> {
   MyAppState(){
-    getFav().then((var values){
-      favourites = values;
+    getFav().then((var valuefav){
+      favourites = valuefav;
     }).whenComplete(() => print(favourites));
-    getIsFav().then((var value){
-      isFav = value;
+    getIsFav().then((var valueisfav){
+      isFav = valueisfav;
     });
+    //for(int initind = 0; initind < contentEntries.length; initind++){
+     // getTrailings(initind).then((var valuetrail){
+     //  trailings[initind] = valuetrail;
+     // });
+    //}
+    getTrailings(0).then((var valuetrail){
+      trailings[0] = valuetrail;
+    });
+
     for(int cindex = 0; cindex < contentEntries.length; cindex++){
       List tmp = [];
       for(int eindex = 0; eindex < entries[cindex].length; eindex++){
@@ -100,12 +140,7 @@ class MyAppState extends State<MyApp> {
 // Listen und dicts
 
   //lokal
-  List trailings = [
-    [false, false, false, false, false, false, false],
-    [],
-    []
-  ];
-
+  List<List> trailings = new List(3);
   //lokal
   final headlines = [
     [
@@ -236,7 +271,8 @@ class MyAppState extends State<MyApp> {
   void resetCourse(){
     setState(() {
       for(int item = 0; item<trailings[contentIndex].length; item++){
-        trailings[contentIndex][item] = false;
+        trailings[contentIndex][item] = "false";
+        setTrailings(contentIndex, item, "false");
       }
     });
   }
@@ -289,16 +325,16 @@ class MyAppState extends State<MyApp> {
     setState(() {
       isOverview = !isOverview;
       reset();
-      trailings[contentIndex][entryIndex] = true;
-      for (bool item in trailings[contentIndex]) {
-        if (item == false) {
+      trailings[contentIndex][entryIndex] = "true";
+      setTrailings(contentIndex, entryIndex, "true");
+      for (var item in trailings[contentIndex]) {
+        if (item == "false") {
           done = false;
         }
-        if (item == true) {
+        if (item == "true") {
           tmp.add(item);
           if (tmp.length == trailings[contentIndex].length) {
             allDone = true;
-
           }
         }
       }
@@ -755,7 +791,7 @@ class MyAppState extends State<MyApp> {
                     tileColor: Colors.white,
                     title: Text('${entries[contentIndex][index]}'),
                     leading: Image.asset(assets[contentIndex][index]),
-                    trailing: switchTrailing(trailings[contentIndex][index]),
+                    trailing: switchTrailing(trailings[contentIndex][index] == "true"),
                   ));
             });
         //bottomNavigationBar: boNaBa("Lernen"),
